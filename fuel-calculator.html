@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fuel Planning Calculator | YachtOps Toolkit</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .wrap {
+      max-width: 520px;
+      margin: 40px auto;
+    }
+    a.back {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 14px;
+      display: inline-block;
+      margin-bottom: 24px;
+    }
+    a.back:hover { color: #f1f5f9; }
+    .card {
+      background: rgba(30,41,59,0.8);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 32px;
+    }
+    h1 {
+      font-size: 24px;
+      color: #f1f5f9;
+      margin-bottom: 6px;
+    }
+    .sub {
+      color: #94a3b8;
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      color: #94a3b8;
+      margin-bottom: 6px;
+      margin-top: 16px;
+    }
+    input {
+      width: 100%;
+      background: rgba(15,23,42,0.8);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: #f1f5f9;
+      font-size: 16px;
+    }
+    input:focus {
+      outline: none;
+      border-color: #0f766e;
+    }
+    button {
+      width: 100%;
+      margin-top: 28px;
+      background: #0f766e;
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover { background: #0d9488; }
+    .result {
+      margin-top: 28px;
+      padding: 20px;
+      background: rgba(15,118,110,0.15);
+      border: 1px solid rgba(20,184,166,0.3);
+      border-radius: 12px;
+      display: none;
+    }
+    .result h3 {
+      color: #5eead4;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+    .result-row span:last-child {
+      font-weight: 600;
+      color: #f1f5f9;
+    }
+    .note {
+      margin-top: 16px;
+      font-size: 12px;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a href="/" class="back">← Back to Toolkit</a>
+
+    <div class="card">
+      <h1>⛽ Fuel Planning Calculator</h1>
+      <p class="sub">Quick estimate for voyage fuel needs and cost.</p>
+
+      <label>Distance (nautical miles)</label>
+      <input type="number" id="distance" placeholder="e.g. 120" min="0" step="0.1">
+
+      <label>Average speed (knots)</label>
+      <input type="number" id="speed" placeholder="e.g. 10" min="0" step="0.1">
+
+      <label>Fuel burn rate (liters per hour)</label>
+      <input type="number" id="burn" placeholder="e.g. 45" min="0" step="0.1">
+
+      <label>Fuel price (per liter)</label>
+      <input type="number" id="price" placeholder="e.g. 1.85" min="0" step="0.01">
+
+      <button onclick="calculate()">Calculate</button>
+
+      <div class="result" id="result">
+        <h3>Estimated results</h3>
+        <div class="result-row">
+          <span>Voyage time</span>
+          <span id="time">—</span>
+        </div>
+        <div class="result-row">
+          <span>Fuel needed</span>
+          <span id="fuel">—</span>
+        </div>
+        <div class="result-row">
+          <span>Estimated cost</span>
+          <span id="cost">—</span>
+        </div>
+        <p class="note">This is a simple estimate. Always add a safety margin and check manufacturer data.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function calculate() {
+      const distance = parseFloat(document.getElementById('distance').value) || 0;
+      const speed = parseFloat(document.getElementById('speed').value) || 0;
+      const burn = parseFloat(document.getElementById('burn').value) || 0;
+      const price = parseFloat(document.getElementById('price').value) || 0;
+
+      if (distance <= 0 || speed <= 0 || burn <= 0) {
+        alert('Please enter distance, speed and burn rate.');
+        return;
+      }
+
+      const hours = distance / speed;
+      const fuelLiters = hours * burn;
+      const totalCost = fuelLiters * price;
+
+      document.getElementById('time').textContent = hours.toFixed(1) + ' hours';
+      document.getElementById('fuel').textContent = fuelLiters.toFixed(0) + ' liters';
+      document.getElementById('cost').textContent = price > 0 ? '$' + totalCost.toFixed(0) : '—';
+      document.getElementById('result').style.display = 'block';
+    }
+  </script>
+</body>
+</html>

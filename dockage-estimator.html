@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dockage Estimator | YachtOps Toolkit</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;padding:20px}
+.wrap{max-width:520px;margin:40px auto}
+a.back{color:#94a3b8;text-decoration:none;font-size:14px;display:inline-block;margin-bottom:24px}
+.card{background:rgba(30,41,59,.8);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:32px}
+h1{font-size:24px;color:#f1f5f9;margin-bottom:6px}
+.sub{color:#94a3b8;font-size:14px;margin-bottom:28px}
+label{display:block;font-size:13px;color:#94a3b8;margin:16px 0 6px}
+input{width:100%;background:rgba(15,23,42,.8);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:12px 14px;color:#f1f5f9;font-size:16px}
+button{width:100%;margin-top:28px;background:#0f766e;color:#fff;border:none;padding:14px;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer}
+.result{margin-top:28px;padding:20px;background:rgba(15,118,110,.15);border:1px solid rgba(20,184,166,.3);border-radius:12px;display:none}
+.result h3{color:#5eead4;font-size:14px;margin-bottom:12px}
+.result-row{display:flex;justify-content:space-between;margin-bottom:8px;font-size:15px}
+.result-row span:last-child{font-weight:600;color:#f1f5f9}
+.note{margin-top:16px;font-size:12px;color:#64748b}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a href="/" class="back">← Back to Toolkit</a>
+<div class="card">
+<h1>⚓ Dockage Estimator</h1>
+<p class="sub">Quick estimate of dockage cost.</p>
+<label>Vessel length (feet)</label>
+<input type="number" id="length" placeholder="e.g. 85" min="0">
+<label>Rate per foot per day ($)</label>
+<input type="number" id="rate" placeholder="e.g. 2.50" min="0" step="0.01">
+<label>Number of days</label>
+<input type="number" id="days" placeholder="e.g. 7" min="1">
+<button onclick="calc()">Calculate</button>
+<div class="result" id="result">
+<h3>Estimated results</h3>
+<div class="result-row"><span>Daily cost</span><span id="daily">—</span></div>
+<div class="result-row"><span>Total cost</span><span id="total">—</span></div>
+<p class="note">Simple estimate. Marina rates and extras may vary.</p>
+</div>
+</div>
+</div>
+<script>
+function calc(){
+const L=+document.getElementById('length').value||0;
+const R=+document.getElementById('rate').value||0;
+const D=+document.getElementById('days').value||0;
+if(L<=0||R<=0||D<=0){alert('Please fill all fields.');return}
+const daily=L*R, total=daily*D;
+document.getElementById('daily').textContent='$'+daily.toFixed(0);
+document.getElementById('total').textContent='$'+total.toFixed(0);
+document.getElementById('result').style.display='block';
+}
+</script>
+</body>
+</html>

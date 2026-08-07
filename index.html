@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YachtOps Toolkit | YachtCoreOS</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:system-ui,-apple-system,sans-serif;background:#0f172a;color:#e2e8f0;line-height:1.5}
+    a{color:inherit;text-decoration:none}
+    header{display:flex;justify-content:space-between;align-items:center;padding:14px 24px;border-bottom:1px solid rgba(255,255,255,.08);background:rgba(15,23,42,.95);position:sticky;top:0;z-index:100}
+    .logo{font-weight:700;font-size:17px;display:flex;align-items:center;gap:10px}
+    .logo-icon{width:34px;height:34px;background:linear-gradient(135deg,#0f766e,#14b8a6);border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff}
+    nav{display:flex;gap:22px;align-items:center}
+    nav a{color:#94a3b8;font-size:14px}
+    nav a:hover{color:#f1f5f9}
+    .nav-cta{background:#0f766e;color:#fff!important;padding:10px 18px;border-radius:9px;font-weight:600;font-size:14px}
+    .hero{text-align:center;padding:70px 20px 50px}
+    .badge{display:inline-block;background:rgba(15,118,110,.25);color:#5eead4;font-size:13px;padding:6px 14px;border-radius:20px;margin-bottom:18px}
+    .hero h1{font-size:clamp(30px,5vw,46px);font-weight:800;color:#f1f5f9;margin-bottom:14px}
+    .hero p{color:#94a3b8;font-size:17px;max-width:580px;margin:0 auto 12px}
+    .tagline{text-align:center;color:#5eead4;font-size:15px;margin-bottom:28px}
+    .hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+    .btn{display:inline-block;padding:13px 26px;border-radius:10px;font-weight:600;font-size:15px}
+    .btn-primary{background:#0f766e;color:#fff}
+    .btn-ghost{color:#38bdf8}
+    .section{padding:50px 20px}
+    .section-title{text-align:center;font-size:26px;color:#f1f5f9;margin-bottom:8px}
+    .section-sub{text-align:center;color:#94a3b8;margin-bottom:32px;font-size:15px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;max-width:1000px;margin:0 auto}
+    .card{background:rgba(30,41,59,.65);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:26px}
+    .card-icon{font-size:30px;margin-bottom:12px}
+    .card h3{color:#f1f5f9;font-size:18px;margin-bottom:8px}
+    .card p{color:#94a3b8;font-size:14px;margin-bottom:18px;min-height:42px}
+    .tag{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;margin-bottom:12px}
+    .tag-free{background:rgba(20,184,166,.2);color:#5eead4}
+    .tag-locked{background:rgba(251,191,36,.15);color:#fbbf24}
+    .card-btn{display:inline-block;padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600}
+    .btn-free{background:#0f766e;color:#fff}
+    .btn-locked{background:rgba(255,255,255,.08);color:#fbbf24;border:1px solid rgba(251,191,36,.3)}
+    .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;max-width:860px;margin:0 auto}
+    .price-card{background:rgba(30,41,59,.7);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:32px;text-align:center}
+    .price-card.featured{border-color:#0f766e;box-shadow:0 0 0 1px #0f766e}
+    .price-card h3{color:#f1f5f9;font-size:19px;margin-bottom:6px}
+    .price-tag{color:#5eead4;font-size:13px;margin-bottom:4px;font-weight:600}
+    .price{font-size:34px;font-weight:800;color:#f1f5f9;margin:12px 0 6px}
+    .price span{font-size:15px;font-weight:500;color:#94a3b8}
+    .price-card ul{list-style:none;text-align:left;margin:22px 0;color:#94a3b8;font-size:14px}
+    .price-card li{margin-bottom:10px;padding-left:22px;position:relative}
+    .price-card li::before{content:"✓";position:absolute;left:0;color:#14b8a6}
+    .price-btn{display:block;background:#0f766e;color:#fff;padding:13px;border-radius:10px;font-weight:600;margin-top:8px}
+    .price-card.featured .price-btn{background:#0d9488}
+    details{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:15px 18px;margin-bottom:10px;max-width:680px;margin-left:auto;margin-right:auto}
+    summary{cursor:pointer;font-weight:600;color:#f1f5f9;font-size:15px}
+    details p{margin-top:10px;color:#94a3b8;font-size:14px}
+    footer{text-align:center;padding:36px 20px;color:#64748b;font-size:13px;border-top:1px solid rgba(255,255,255,.06)}
+    @media(max-width:640px){nav a:not(.nav-cta){display:none}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"><div class="logo-icon">Y</div> YachtOps Toolkit</div>
+    <nav>
+      <a href="#free">Free Tools</a>
+      <a href="#locked">Full Access</a>
+      <a href="#pricing">Pricing</a>
+      <a href="https://buy.stripe.com/fZudR8fS865ib2gfHUao800" class="nav-cta" target="_blank">Start Pro – $29/mo</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="badge">3 free tools · Full form unlocked after payment</div>
+    <h1>YachtOps Toolkit</h1>
+    <p>Practical tools for fuel, dockage, crew rotation and the Stew-Captain Inquiry Form — built for the people doing the work.</p>
+    <p class="tagline">The $20 fix for the texting tax — unlock the Stew Inquiry form.</p>
+    <div class="hero-btns">
+  <a href="#free" class="btn btn-primary">Try Free Tools</a>
+  <a href="#pricing" class="btn btn-primary">See Paid Access</a>
+  <a href="stew-inquiry-demo.html" class="btn btn-primary">See How Fast Captains Fill It</a>
+</div>
+  </section>
+
+  <section class="section" id="free">
+    <h2 class="section-title">Free tools — try them now</h2>
+    <p class="section-sub">No payment needed. Click and use immediately.</p>
+    <div class="grid">
+      <div class="card">
+        <span class="tag tag-free">FREE</span>
+        <div class="card-icon">⛽</div>
+        <h3>Fuel Planning Calculator</h3>
+        <p>Estimate fuel consumption and voyage costs quickly.</p>
+        <a href="/fuel-calculator.html" class="card-btn btn-free">Open Calculator →</a>
+      </div>
+      <div class="card">
+        <span class="tag tag-free">FREE</span>
+        <div class="card-icon">⚓</div>
+        <h3>Dockage Estimator</h3>
+        <p>Calculate dockage rates and total costs in seconds.</p>
+        <a href="/dockage-estimator.html" class="card-btn btn-free">Open Estimator →</a>
+      </div>
+      <div class="card">
+        <span class="tag tag-free">FREE</span>
+        <div class="card-icon">👥</div>
+        <h3>Crew Rotation Preview</h3>
+        <p>Simple preview of crew rotation schedules.</p>
+        <a href="/crew-rotation.html" class="card-btn btn-free">Open Preview →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="locked">
+    <h2 class="section-title">Full access tools</h2>
+    <p class="section-sub">These unlock after payment via Stripe.</p>
+    <div class="grid">
+      <div class="card">
+  <span class="tag tag-locked">🔒 LOCKED</span>
+  <div class="card-icon">📋</div>
+  <h3>Stew-Captain Inquiry Form</h3>
+  <p>Full structured form Captains complete in under 60 seconds — vessel, program, pay, rotation, crew. No more back-and-forth texts.</p>
+  <a href="stew-inquiry-demo.html" class="card-btn btn-locked">See how fast Captains fill it →</a>
+  <a href="#pricing" class="card-btn btn-locked" style="margin-top:8px; display:inline-block;">Unlock with payment →</a>
+</div>
+
+
+      <div class="card">
+        <span class="tag tag-locked">🔒 LOCKED</span>
+        <div class="card-icon">🛠️</div>
+        <h3>Advanced Work-Rate Tools</h3>
+        <p>Full set of yacht work rate and compliance helpers.</p>
+        <a href="#pricing" class="card-btn btn-locked">Unlock with payment →</a>
+      </div>
+      <div class="card">
+        <span class="tag tag-locked">🔒 LOCKED</span>
+        <div class="card-icon">📊</div>
+        <h3>Metrics & Compliance Overview</h3>
+        <p>Industry metrics and compliance software overview.</p>
+        <a href="#pricing" class="card-btn btn-locked">Unlock with payment →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="pricing">
+    <h2 class="section-title">Choose your access</h2>
+    <p class="section-sub">Buy the form once and keep it, or unlock everything with a subscription.</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <h3>Own the Stew-Captain Form</h3>
+        <div class="price-tag">Buy once, use it forever</div>
+        <div class="price">$19.99 <span>one-time</span></div>
+        <ul>
+          <li>Full Stew-Captain Inquiry Form</li>
+          <li>Reusable anytime — no limit</li>
+          <li>No subscription</li>
+        </ul>
+        <a href="https://buy.stripe.com/fZueVcaxOctGgmAgLYao801" class="price-btn" target="_blank">Buy Once — Own It</a>
+      </div>
+      <div class="price-card featured">
+        <h3>Unlock Everything</h3>
+        <div class="price-tag">All tools, including the Stew-Captain Form</div>
+        <div class="price">$29 <span>/ month</span></div>
+        <ul>
+          <li>Full Stew-Captain Inquiry Form</li>
+          <li>All locked tools</li>
+          <li>Ongoing updates</li>
+          <li>Cancel anytime</li>
+        </ul>
+        <a href="https://buy.stripe.com/fZudR8fS865ib2gfHUao800" class="price-btn" target="_blank">Unlock All Tools — $29/mo</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <h2 class="section-title">FAQ</h2>
+    <details>
+      <summary>What do I get after I pay?</summary>
+      <p>You're redirected to a Thank You page with a link to the Stew-Captain Inquiry Form. If you bought the $19.99 one-time option, that form is yours to reuse anytime — no subscription needed. If you subscribe to YachtOps Pro ($29/mo), you get every tool unlocked, including the Stew-Captain Form, plus new tools as they're added.</p>
+    </details>
+    <details>
+      <summary>Can I cancel the monthly plan?</summary>
+      <p>Yes. You can cancel YachtOps Pro at any time. No long-term commitment.</p>
+    </details>
+    <details>
+      <summary>Is there a free trial?</summary>
+      <p>Not right now. Three tools are free to try above. Paid access is $19.99 one-time or $29/month.</p>
+    </details>
+    <details>
+      <summary>How quickly do I get access?</summary>
+      <p>Immediately after payment. The Thank You page gives you the link right away.</p>
+    </details>
+  </section>
+
+  <footer>
+    YachtCoreOS · YachtOps Toolkit<br>
+    Need help? <a href="mailto:yachtcoreconnect@yachtcoreos.com" style="color:#38bdf8">yachtcoreconnect@yachtcoreos.com</a>
+  </footer>
+</body>
+</html>

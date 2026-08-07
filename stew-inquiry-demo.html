@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YachtCoreOS Stew Inquiry - DEMO MODE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Smooth transitions for button clicks */
+        .option-btn {
+            transition: all 0.2s ease;
+        }
+        .option-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .option-btn.selected {
+            background-color: #6d4aff; /* Proton Purple */
+            color: white;
+            border-color: #6d4aff;
+        }
+        /* Demo Banner Style */
+        .demo-banner {
+            background: linear-gradient(90deg, #ff6b6b, #ee5a5a);
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-sans">
+
+    <!-- DEMO BANNER -->
+    <div class="demo-banner">
+        🎥 DEMO MODE: This is an interactive preview. No data is being sent.
+    </div>
+
+    <div class="max-w-2xl mx-auto py-8 px-4">
+        
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">YachtCoreOS Stew Inquiry</h1>
+            <p class="text-gray-500 mt-2">Certified Direct-to-Stew Transmission Pipeline</p>
+        </div>
+
+        <!-- Form Container -->
+        <div class="bg-white rounded-xl shadow-lg p-6 space-y-6">
+            
+            <!-- Text Inputs (Read-only for demo) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 opacity-75 pointer-events-none select-none">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Vessel Size (e.g. 150ft)</label>
+                    <input type="text" value="150ft" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Flag (e.g. Marshall Islands)</label>
+                    <input type="text" value="Marshall Islands" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Year Built</label>
+                    <input type="text" value="2018" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Make / Builder</label>
+                    <input type="text" value="Heesen" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
+                </div>
+            </div>
+
+            <!-- Interactive Button Sections -->
+            
+            <!-- Program Structure -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-800 mb-3">Program Structure</label>
+                <div class="flex flex-wrap gap-2" id="program-group">
+                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Private</button>
+                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Charter</button>
+                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Hybrid</button>
+                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Other Program</button>
+                </div>
+            </div>
+
+            <!-- Contract Duration -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-800 mb-3">Contract Duration</label>
+                <div class="flex flex-wrap gap-2" id="contract-group">
+                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Temporary</button>
+                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Part-Time</button>
+                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Full-Time</button>
+                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Seasonal</button>
+                </div>
+            </div>
+
+            <!-- Usage Intensity -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-800 mb-3">Usage Intensity</label>
+                <div class="flex flex-wrap gap-2" id="usage-group">
+                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Light Use</button>
+                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Moderate Use</button>
+                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Heavy Use</button>
+                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Live-Aboard</button>
+                </div>
+            </div>
+
+            <!-- Primary Location -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-800 mb-3">Primary Location / Port</label>
+                <div class="flex flex-wrap gap-2" id="location-group">
+                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Miami</button>
+                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Fort Lauderdale</button>
+                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">West Palm</button>
+                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">New York</button>
+                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Other Port</button>
+                </div>
+            </div>
+
+            <!-- Crew Complement -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-800 mb-3">Crew Complement</label>
+                <div class="flex flex-wrap gap-2" id="crew-group">
+                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">2 Crew</button>
+                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">3 Crew</button>
+                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">4 Crew</button>
+                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Total / Other</button>
+                </div>
+            </div>
+
+            <!-- Read-only inputs below -->
+            <div class="opacity-75 pointer-events-none select-none">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Prev. Pay Rate</label>
+                <input type="text" value="$4,500/mo" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed mb-3">
+                
+                <label class="block text-sm font-medium text-gray-700 mb-1">Current Offer ($)</label>
+                <input type="text" value="$5,200/mo" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed mb-3">
+                
+                <label class="block text-sm font-medium text-gray-700 mb-1">Med Ins Included?</label>
+                <input type="text" value="Yes" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed mb-3">
+                
+                <label class="block text-sm font-medium text-gray-700 mb-1">Other Perks / Tips</label>
+                <textarea class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed h-20">Bonus structure included</textarea>
+            </div>
+
+            <!-- Submit Button (Disabled) -->
+            <div class="pt-4">
+                <button disabled class="w-full bg-gray-300 text-gray-500 font-bold py-3 px-4 rounded-lg cursor-not-allowed flex justify-center items-center">
+                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    DEMO MODE: Submission Disabled
+                </button>
+                <p class="text-xs text-center text-gray-400 mt-2">Connect to YachtCoreOS network to activate submission.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function selectOption(btn) {
+            // Find the parent group container
+            const parent = btn.parentElement;
+            
+            // Remove 'selected' class from all siblings in this group
+            const siblings = parent.querySelectorAll('.option-btn');
+            siblings.forEach(sib => sib.classList.remove('selected'));
+            
+            // Add 'selected' class to clicked button
+            btn.classList.add('selected');
+            
+            // Optional: Visual feedback log for the demo
+            console.log("Selected:", btn.innerText);
+        }
+    </script>
+</body>
+</html>

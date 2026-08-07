@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YachtCoreOS | Certified Stew Inquiry</title>
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #0284c7;
+            --bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --text: #334155;
+            --border: #cbd5e1;
+            --active-bg: #e0f2fe;
+            --active-border: #0284c7;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 860px;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        }
+        h2 {
+            color: var(--primary);
+            margin-top: 0;
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 16px;
+        }
+        .grid-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        @media (max-width: 768px) {
+            .grid-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 480px) {
+            .grid-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        .field-box {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .field-box input[type="text"], .field-box input[type="date"] {
+            border: none;
+            background: transparent;
+            font-size: 13px;
+            color: var(--text);
+            outline: none;
+            width: 100%;
+            padding: 2px 0;
+        }
+        .field-box input::placeholder {
+            color: #94a3b8;
+            font-weight: 500;
+        }
+        .pill-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 6px;
+        }
+        .pill {
+            font-size: 11px;
+            padding: 3px 8px;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.15s ease;
+        }
+        .pill:hover {
+            border-color: var(--accent);
+        }
+        .pill.selected {
+            background: var(--active-bg);
+            border-color: var(--active-border);
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .other-input {
+            display: none;
+            margin-top: 6px;
+            width: 100%;
+            padding: 4px 6px;
+            font-size: 11px;
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            outline: none;
+            box-sizing: border-box;
+        }
+        .action-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+        }
+        button.action-btn {
+            flex: 1;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button.action-btn:hover {
+            background-color: #0369a1;
+        }
+        button.secondary-btn {
+            background-color: #475569;
+        }
+        button.secondary-btn:hover {
+            background-color: #334155;
+        }
+        #locked-screen {
+            display: none;
+            text-align: center;
+            background: #ffeeee;
+            color: #cc0000;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ffcccc;
+        }
+        .branding {
+            text-align: center;
+            font-size: 10px;
+            color: #94a3b8;
+            margin-top: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="app-container">
+    <!-- SECURITY LOCK SCREEN -->
+    <div id="locked-screen">
+        <h2 style="color:#cc0000;">Form Locked</h2>
+        <p id="lock-reason">This form is no longer available.</p>
+    </div>
+
+    <!-- ACTIVE FORM -->
+    <div id="active-form-wrapper">
+        <h2>YachtCoreOS Stew Inquiry</h2>
+        <div class="subtitle">Certified Direct-to-Stew Transmission Pipeline</div>
+
+        <form id="stewForm" action="https://formspree.io/f/your-form-endpoint-here" method="POST">
+            <input type="hidden" id="tokenField" name="security_token" value="">
+            <input type="hidden" id="stewEmailField" name="stew_destination" value="">
+
+            <div class="grid-row">
+                <div class="field-box"><input type="text" name="vessel_size" placeholder="Vessel Size (e.g. 150ft)"></div>
+                <div class="field-box"><input type="text" name="vessel_flag" placeholder="Flag (e.g. Marshall Islands)"></div>
+                <div class="field-box"><input type="text" name="vessel_year" placeholder="Year Built"></div>
+                <div class="field-box"><input type="text" name="vessel_make" placeholder="Make / Builder"></div>
+            </div>
+
+            <div class="grid-row">
+                <div class="field-box" style="grid-column: span 4;">
+                    <span style="font-size: 11px; font-weight: 600; color: #64748b;">Program Structure</span>
+                    <div class="pill-container" data-name="program_type">
+                        <span class="pill" onclick="selectPill(this)">Private</span>
+                        <span class="pill" onclick="selectPill(this)">Charter</span>
+                        <span class="pill" onclick="selectPill(this)">Hybrid</span>
+                        <span class="pill" onclick="selectPill(this, true)">Other Program</span>
+                    </div>
+                    <input type="text" class="other-input" placeholder="Specify program details...">
+                </div>
+            </div>
+
+            <div class="grid-row">
+                <div class="field-box" style="grid-column: span 4;">
+                    <span style="font-size: 11px; font-weight: 600; color: #64748b;">Contract Duration</span>
+                    <div class="pill-container" data-name="contract_term">
+                        <span class="pill" onclick="selectPill(this)">Temporary</span>
+                        <span class="pill" onclick="selectPill(this)">Part-Time</span>
+                        <span class="pill" onclick="selectPill(this)">Full-Time</span>
+                        <span class="pill" onclick="selectPill(this)">Seasonal</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-row">
+                <div class="field-box" style="grid-column: span 4;">
+                    <span style="font-size: 11px; font-weight: 600; color: #64748b;">Usage Intensity</span>
+                    <div class="pill-container" data-name="usage_intensity">
+                        <span class="pill" onclick="selectPill(this)">Light Use</span>
+                        <span class="pill" onclick="selectPill(this)">Moderate Use</span>
+                        <span class="pill" onclick="selectPill(this)">Heavy Use</span>
+                        <span class="pill" onclick="selectPill(this)">Live-Aboard</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-row">
+                <div class="field-box" style="grid-column: span 4;">
+                    <span style="font-size: 11px; font-weight: 600; color: #64748b;">Primary Location / Port</span>
+                    <div class="pill-container" data-name="location">
+                        <span class="pill" onclick="selectPill(this)">Miami</span>
+                        <span class="pill" onclick="selectPill(this)">Fort Lauderdale</span>
+                        <span class="pill" onclick="selectPill(this)">West Palm</span>
+                        <span class="pill" onclick="selectPill(this)">New York</span>
+                        <span class="pill" onclick="selectPill(this, true)">Other Port</span>
+                    </div>
+                    <input type="text" class="other-input" placeholder="Specify port...">
+                </div>
+            </div>
+
+            <div class="grid-row">
+                <div class="field-box" style="grid-column: span 4;">
+                    <span style="font-size: 11px; font-weight: 600; color: #64748b;">Crew Complement</span>
+                    <div class="pill-container" data-name="crew_size">
+                        <span class="pill" onclick="selectPill(this)">2 Crew</span>
+                        <span class="pill" onclick="selectPill(this)">3 Crew</span>
+                        <span class="pill" onclick="selectPill(this)">4 Crew</span>
+                        <span class="pill" onclick="selectPill(this, true)">Total / Other</span>
+                    </div>
+                    <input type="text" class="other-input" placeholder="Specify crew total...">
+                </div>
+            </div>
+
+            <div class="grid-row">
+                <div class="field-box"><input type="text" name="prev_pay" placeholder="Prev. Pay Rate"></div>
+                <div class="field-box"><input type="text" name="current_offer" placeholder="Current Offer ($)"></div>
+                <div class="field-box"><input type="text" name="med_ins" placeholder="Med Ins Included?"></div>
+                <div class="field-box"><input type="text" name="comp_other" placeholder="Other Perks / Tips"></div>
+            </div>
+
+            <div class="grid-row">
+                <div class="field-box"><input type="text" name="start_date" placeholder="Start Date"></div>
+                <div class="field-box"><input type="text" name="finish_date" placeholder="Finish Date"></div>
+                <div class="field-box"><input type="text" name="date_from" placeholder="From..."></div>
+                <div class="field-box"><input type="text" name="date_to" placeholder="To..."></div>
+            </div>
+
+            <div class="grid-row">
