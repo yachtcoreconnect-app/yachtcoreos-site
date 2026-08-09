@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YachtCoreOS Project Assistant</title>
+
+  <style>
+    :root {
+      --bg: #07121c;
+      --panel: #0d1c28;
+      --panel2: #102433;
+      --text: #eef7ff;
+      --muted: #9fb6c8;
+      --border: #284153;
+      --complete: #2cc970;
+      --current: #f5b942;
+      --next: #54a7ff;
+      --future: #7e8a97;
+      --danger: #ff6b6b;
+      --accent: #35d0ba;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #06111a, #0a1b27);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    button, input { font: inherit; }
+
+    .app {
+      max-width: 1100px;
+      margin: auto;
+      padding: 24px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    h1 { margin: 0 0 6px; font-size: 36px; }
+    h2 { margin-top: 0; }
+
+    .subtitle { color: var(--muted); margin-bottom: 24px; }
+    .grid { display: grid; gap: 16px; }
+    .metrics { grid-template-columns: repeat(3, 1fr); }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    .label { color: var(--muted); font-size: 13px; }
+    .value { font-size: 22px; font-weight: bold; margin-top: 6px; }
+
+    .session-panel {
+      min-width: 250px;
+      text-align: right;
+    }
+
+    .session-email {
+      color: var(--muted);
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .sync-status {
+      margin-top: 7px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .sync-status.success { color: var(--complete); }
+    .sync-status.warning { color: var(--current); }
+    .sync-status.error { color: var(--danger); }
+
+    .timeline {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .step {
+      border-radius: 14px;
+      padding: 16px;
+      cursor: pointer;
+      border: 2px solid var(--border);
+      background: var(--panel2);
+      transition: 0.2s ease;
+    }
+
+    .step:hover { transform: translateY(-2px); }
+    .step.complete { border-color: var(--complete); }
+    .step.current { border-color: var(--current); background: rgba(245, 185, 66, 0.08); }
+    .step.next { border-color: var(--next); }
+    .step.future { border-color: var(--future); opacity: 0.8; }
+    .step.selected { outline: 3px solid var(--accent); }
+    .step-number { color: var(--muted); font-size: 12px; }
+    .step-name { font-size: 17px; font-weight: bold; margin-top: 8px; }
+    .step-dept { color: var(--muted); font-size: 13px; margin-top: 6px; }
+    .status { margin-top: 10px; font-size: 13px; font-weight: bold; }
+    .complete .status { color: var(--complete); }
+    .current .status { color: var(--current); }
+    .next .status { color: var(--next); }
+    .future .status { color: var(--future); }
+    .details { margin-top: 24px; }
+
+    .handoff {
+      white-space: pre-wrap;
+      background: #07131c;
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 12px;
+      font-family: monospace;
+      line-height: 1.5;
+    }
+
+    button {
+      margin-top: 14px;
+      background: var(--accent);
+      color: #05241f;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button.secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      margin-left: 8px;
+    }
+
+    button:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .auth-overlay {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(3, 10, 16, 0.88);
+      z-index: 20;
+    }
+
+    .auth-overlay[hidden] { display: none; }
+
+    .auth-card {
+      width: min(440px, 100%);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+    }
+
+    .auth-card p { color: var(--muted); line-height: 1.5; }
+
+    .auth-card label {
+      display: block;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .auth-card input {
+      width: 100%;
+      margin-top: 6px;
+      padding: 12px;
+      color: var(--text);
+      background: #07131c;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .auth-message { min-height: 20px; margin-top: 12px; font-size: 13px; }
+    .auth-message.error { color: var(--danger); }
+    .auth-message.success { color: var(--complete); }
+    .auth-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .auth-actions button.secondary { margin-left: 0; }
+
+    .noscript {
+      margin: 20px;
+      padding: 16px;
+      color: white;
+      background: #7f1d1d;
+      border-radius: 10px;
+    }
+
+    @media (max-width: 800px) {
+      .metrics, .timeline { grid-template-columns: 1fr 1fr; }
+      .topbar { flex-direction: column; }
+      .session-panel { text-align: left; min-width: 0; }
+    }
+
+    @media (max-width: 520px) {
+      .metrics, .timeline { grid-template-columns: 1fr; }
+      .app { padding: 14px; }
+    }
+  </style>
+</head>
+
+<body>
+  <noscript><div class="noscript">JavaScript is required to use Project Assistant.</div></noscript>
+
+  <div class="auth-overlay" id="authOverlay">
+    <form class="auth-card" id="authForm">
+      <h2>Project Assistant sign in</h2>
+      <p>Use the YachtCoreOS company account registered in Supabase Authentication.</p>
+
+      <label for="emailInput">Company email</label>
+      <input id="emailInput" type="email" autocomplete="username" required />
+
+      <label for="passwordInput">Password</label>
+      <input id="passwordInput" type="password" autocomplete="current-password" />
+
+      <div class="auth-actions">
+        <button type="submit" id="passwordSignInButton">Sign in</button>
+        <button type="button" class="secondary" id="magicLinkButton">Email secure sign-in link</button>
+      </div>
+
+      <div class="auth-message" id="authMessage" aria-live="polite"></div>
+    </form>
+  </div>
+
+  <div class="app">
+    <div class="topbar">
+      <div>
+        <h1>⚓ YachtCoreOS Project Assistant</h1>
+        <div class="subtitle">Know what we are building, where we are, what is complete, and what comes next.</div>
+      </div>
+
+      <div class="session-panel">
+        <div class="session-email" id="sessionEmail">Checking secure session…</div>
+        <div class="sync-status" id="syncStatus" aria-live="polite">Local memory ready.</div>
+        <button class="secondary" id="signOutButton" type="button" hidden>Sign out</button>
+      </div>
+    </div>
+
+    <div class="grid metrics">
+      <div class="card">
+        <div class="label">ACTIVE PROJECT</div>
+        <div class="value" id="activeProject">Stew Inquiry &amp; Job Application Toolkit</div>
+      </div>
+      <div class="card">
+        <div class="label">CURRENT STAGE</div>
+        <div class="value" id="currentStage">Launch</div>
+      </div>
+      <div class="card">
+        <div class="label">COMMERCIAL PATH</div>
+        <div class="value">$29 → $79 → $299 → $995</div>
+      </div>
+    </div>
+
+    <div class="card details">
+      <h2>Project Map</h2>
+      <div class="timeline" id="timeline"></div>
+    </div>
+
+    <div class="card details">
+      <h2>Selected Stage</h2>
+      <div id="stageDetails"></div>
+    </div>
+
+    <div class="card details">
+      <h2>AI Handoff</h2>
+      <div class="handoff" id="handoff"></div>
+      <button id="copyButton" type="button">Copy AI Handoff</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    "use strict";
+
+    // Paste only the public Project URL and public anon/publishable key here.
+    // Never place the service_role key in a browser file.
+    const SUPABASE_URL = "https://tfzbdevnhzzbbhtsarid.supabase.co";
+    const SUPABASE_PUBLIC_KEY = "sb_publishable_56xqPAuxCFUe7edhDUzUaQ_7aZQtOUI";
+
+    const PROJECT_NAME = "Stew Inquiry & Job Application Toolkit";
+    const LOCAL_STAGE_KEY = "yachtcoreos-current-stage";
+    const LOCAL_PENDING_KEY = "yachtcoreos-pending-checkpoint";
+
+    const stages = [
+      { name: "Idea", department: "Product / Manager", status: "complete", question: "What painful problem are we solving, for whom, and what is the smallest sellable result?" },
+      { name: "Product", department: "Product / Manager", status: "complete", question: "What exactly belongs in the MVP and what should stay out?" },
+      { name: "Finance", department: "Finance", status: "complete", question: "Who pays, how much, and what is the shortest realistic path to revenue?" },
+      { name: "Architecture", department: "Architecture & Security", status: "complete", question: "What technical structure is necessary to sell this safely?" },
+      { name: "Reliability", department: "Offline / Sync", status: "next", question: "What must work without connectivity now, and what can safely wait?" },
+      { name: "Build", department: "Development", status: "current", question: "What is missing between the current files and a customer-ready product?" },
+      { name: "Payments", department: "Stripe / Infrastructure", status: "current", question: "Can a real customer pay and receive exactly what was promised?" },
+      { name: "Launch", department: "Sales / Operations", status: "current", question: "Which audience can see, understand, and buy this immediately?" },
+      { name: "Evaluate", department: "Evaluation", status: "next", question: "What do visitors, purchases, objections, and usage tell us?" },
+      { name: "Adapt", department: "Adaptation", status: "future", question: "What should change based on the evidence?" },
+      { name: "Adjust", department: "Adjustment", status: "future", question: "What approved change should we execute and measure next?" }
+    ];
+
+    const savedStage = Number(localStorage.getItem(LOCAL_STAGE_KEY));
+    let selectedIndex = Number.isInteger(savedStage) && savedStage >= 0 && savedStage < stages.length ? savedStage : 7;
+    let currentUser = null;
+    let activeProjectRecord = null;
+    let isInitializing = true;
+    let db = null;
+
+    const elements = {
+      timeline: document.getElementById("timeline"),
+      stageDetails: document.getElementById("stageDetails"),
+      handoff: document.getElementById("handoff"),
+      currentStage: document.getElementById("currentStage"),
+      activeProject: document.getElementById("activeProject"),
+      copyButton: document.getElementById("copyButton"),
+      authOverlay: document.getElementById("authOverlay"),
+      authForm: document.getElementById("authForm"),
+      emailInput: document.getElementById("emailInput"),
+      passwordInput: document.getElementById("passwordInput"),
+      magicLinkButton: document.getElementById("magicLinkButton"),
+      passwordSignInButton: document.getElementById("passwordSignInButton"),
+      authMessage: document.getElementById("authMessage"),
+      sessionEmail: document.getElementById("sessionEmail"),
+      syncStatus: document.getElementById("syncStatus"),
+      signOutButton: document.getElementById("signOutButton")
+    };
+
+    function configIsReady() {
+      return SUPABASE_URL.startsWith("https://") && !SUPABASE_URL.includes("PASTE_") && !SUPABASE_PUBLIC_KEY.includes("PASTE_");
+    }
+
+    function setSyncStatus(message, type = "") {
+      elements.syncStatus.textContent = message;
+      elements.syncStatus.className = "sync-status" + (type ? " " + type : "");
+    }
+
+    function setAuthMessage(message, type = "") {
+      elements.authMessage.textContent = message;
+      elements.authMessage.className = "auth-message" + (type ? " " + type : "");
+    }
+
+    function setAuthBusy(isBusy) {
+      elements.passwordSignInButton.disabled = isBusy;
+      elements.magicLinkButton.disabled = isBusy;
+      elements.emailInput.disabled = isBusy;
+      elements.passwordInput.disabled = isBusy;
+    }
+
+    function render() {
+      elements.timeline.innerHTML = "";
+
+      stages.forEach((stage, index) => {
+        const div = document.createElement("div");
+        div.className = "step " + stage.status + (index === selectedIndex ? " selected" : "");
+        div.innerHTML = `
+          <div class="step-number">Stage ${index + 1}</div>
+          <div class="step-name">${stage.name}</div>
+          <div class="step-dept">${stage.department}</div>
+          <div class="status">${stage.status.toUpperCase()}</div>
+        `;
+
+        div.addEventListener("click", async () => {
+          if (selectedIndex === index) return;
+          selectedIndex = index;
+          localStorage.setItem(LOCAL_STAGE_KEY, String(index));
+          queuePendingCheckpoint();
+          render();
+          await saveCheckpoint();
+        });
+
+        elements.timeline.appendChild(div);
+      });
+
+      const stage = stages[selectedIndex];
+      elements.currentStage.textContent = stage.name;
+      elements.stageDetails.innerHTML = `
+        <p><strong>Department:</strong> ${stage.department}</p>
+        <p><strong>Status:</strong> ${stage.status}</p>
+        <p><strong>Main question:</strong><br>${stage.question}</p>
+      `;
+
+      const completed = stages.filter(stageItem => stageItem.status === "complete").map(stageItem => stageItem.name).join(", ");
+      const next = stages[selectedIndex + 1];
+      elements.handoff.textContent = `YACHTCOREOS AI HANDOFF
+
+ACTIVE PROJECT
+${PROJECT_NAME}
+
+CURRENT POSITION
+Stage ${selectedIndex + 1} of ${stages.length}
+${stage.name}
+
+DEPARTMENT
+${stage.department}
+
+STATUS
+${stage.status.toUpperCase()}
+
+COMPLETED
+${completed}
+
+QUESTION FOR THIS AI
+${stage.question}
+
+NEXT STEP
+${next ? next.name + " — " + next.department : "Return to Evaluation and continue the feedback loop."}
+
+RULE
+Do not describe anything as implemented, deployed, or verified without direct evidence from the actual source files, live deployment, or end-to-end test.`;
+    }
+
+    function checkpointPayload() {
+      const stage = stages[selectedIndex];
+      return {
+        selected_index: selectedIndex,
+        stage_name: stage.name,
+        department: stage.department,
+        stage_status: stage.status,
+        saved_at: new Date().toISOString()
+      };
+    }
+
+    function queuePendingCheckpoint() {
+      localStorage.setItem(LOCAL_PENDING_KEY, JSON.stringify(checkpointPayload()));
+      setSyncStatus(navigator.onLine ? "Saved locally; secure sync pending." : "Offline: saved locally; sync will retry.", "warning");
+    }
+
+    async function ensureProject() {
+      const { data: existingProjects, error: selectError } = await db
+        .from("projects")
+        .select("id, name, baseline_version")
+        .eq("name", PROJECT_NAME)
+        .limit(1);
+
+      if (selectError) throw selectError;
+
+      if (existingProjects && existingProjects.length > 0) {
+        activeProjectRecord = existingProjects[0];
+        return;
+      }
+
+      const { data: createdProject, error: insertError } = await db
+        .from("projects")
+        .insert({
+          name: PROJECT_NAME,
+          description: "Project Assistant state and checkpoint memory.",
+          owner_user_id: currentUser.id,
+          created_by: currentUser.id,
+          updated_by: currentUser.id,
+          purpose: "Track verified project progress and provide recoverable AI handoffs."
+        })
+        .select("id, name, baseline_version")
+        .single();
+
+      if (insertError) throw insertError;
+      activeProjectRecord = createdProject;
+    }
+
+    async function loadLatestCheckpoint() {
+      if (!activeProjectRecord) return;
+
+      const { data, error } = await db
+        .from("checkpoints")
+        .select("state_snapshot, created_at")
+        .eq("project_id", activeProjectRecord.id)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (error) throw error;
+
+      const remoteIndex = data && data.state_snapshot ? Number(data.state_snapshot.selected_index) : NaN;
+      if (Number.isInteger(remoteIndex) && remoteIndex >= 0 && remoteIndex < stages.length) {
+        selectedIndex = remoteIndex;
+        localStorage.setItem(LOCAL_STAGE_KEY, String(remoteIndex));
+        render();
+        setSyncStatus("Secure checkpoint loaded.", "success");
+      }
+    }
+
+    async function saveCheckpoint() {
+      if (!currentUser || !activeProjectRecord || !navigator.onLine) return;
+
+      const stateSnapshot = checkpointPayload();
+      setSyncStatus("Syncing secure checkpoint…");
+
+      const { error } = await db.from("checkpoints").insert({
+        project_id: activeProjectRecord.id,
+        label: "Stage " + (selectedIndex + 1) + ": " + stages[selectedIndex].name,
+        summary: "Project Assistant stage selected by the authenticated owner.",
+        state_snapshot: stateSnapshot,
+        baseline_version: activeProjectRecord.baseline_version || 1,
+        source_type: "human",
+        confidence: 1,
+        visibility_scope: "project",
+        sensitivity_level: "standard",
+        is_ai_generated: false,
+        requires_human_review: false,
+        review_status: "not_required",
+        created_by: currentUser.id
+      });
+
+      if (error) {
+        setSyncStatus("Secure sync failed; local copy retained.", "error");
+        console.error("Checkpoint sync failed:", error);
+        return;
+      }
+
+      localStorage.removeItem(LOCAL_PENDING_KEY);
+      setSyncStatus("Secure checkpoint saved.", "success");
+    }
+
+    async function activateSession(session) {
+      currentUser = session ? session.user : null;
+
+      if (!currentUser) {
+        activeProjectRecord = null;
+        elements.authOverlay.hidden = false;
+        elements.signOutButton.hidden = true;
+        elements.sessionEmail.textContent = "Not signed in";
+        setSyncStatus("Local memory ready; secure sync requires sign-in.", "warning");
+        return;
+      }
+
+      elements.authOverlay.hidden = true;
+      elements.signOutButton.hidden = false;
+      elements.sessionEmail.textContent = currentUser.email || "Authenticated owner";
+      setSyncStatus("Connecting secure project memory…");
+
+      try {
+        await ensureProject();
+        elements.activeProject.textContent = activeProjectRecord.name;
+        await loadLatestCheckpoint();
+
+        if (localStorage.getItem(LOCAL_PENDING_KEY)) {
+          await saveCheckpoint();
+        } else if (!elements.syncStatus.classList.contains("success")) {
+          setSyncStatus("Secure project memory connected.", "success");
+        }
+      } catch (error) {
+        console.error("Project initialization failed:", error);
+        setSyncStatus("Could not connect secure project memory; local copy retained.", "error");
+      }
+    }
+
+    async function initialize() {
+      render();
+
+      if (!configIsReady()) {
+        elements.authOverlay.hidden = false;
+        setAuthMessage("Supabase public configuration must be added before sign-in can work.", "error");
+        elements.emailInput.disabled = true;
+        elements.passwordInput.disabled = true;
+        elements.passwordSignInButton.disabled = true;
+        elements.magicLinkButton.disabled = true;
+        elements.sessionEmail.textContent = "Supabase configuration required";
+        setSyncStatus("Local memory remains available.", "warning");
+        return;
+      }
+
+      if (!window.supabase || !window.supabase.createClient) {
+        setAuthMessage("The secure sign-in library could not load. Check the connection and refresh.", "error");
+        return;
+      }
+
+      db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY, {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true
+        }
+      });
+
+      const { data, error } = await db.auth.getSession();
+      if (error) console.error("Session check failed:", error);
+      await activateSession(data ? data.session : null);
+
+      db.auth.onAuthStateChange(async (_event, session) => {
+        if (isInitializing) return;
+        await activateSession(session);
+      });
+
+      isInitializing = false;
+    }
+
+    elements.authForm.addEventListener("submit", async event => {
+      event.preventDefault();
+      if (!db) return;
+
+      const email = elements.emailInput.value.trim();
+      const password = elements.passwordInput.value;
+      if (!email || !password) {
+        setAuthMessage("Enter the company email and password, or request a secure sign-in link.", "error");
+        return;
+      }
+
+      setAuthBusy(true);
+      setAuthMessage("Signing in…");
+      const { error } = await db.auth.signInWithPassword({ email, password });
+      setAuthBusy(false);
+
+      if (error) {
+        setAuthMessage(error.message, "error");
+        return;
+      }
+
+      elements.passwordInput.value = "";
+      setAuthMessage("Signed in.", "success");
+    });
+
+    elements.magicLinkButton.addEventListener("click", async () => {
+      if (!db) return;
+      const email = elements.emailInput.value.trim();
+      if (!email) {
+        setAuthMessage("Enter the company email first.", "error");
+        return;
+      }
+
+      setAuthBusy(true);
+      setAuthMessage("Requesting secure sign-in link…");
+      const { error } = await db.auth.signInWithOtp({
+        email,
+        options: { emailRedirectTo: window.location.origin + window.location.pathname }
+      });
+      setAuthBusy(false);
+
+      if (error) {
+        setAuthMessage(error.message, "error");
+        return;
+      }
+
+      setAuthMessage("Check the company inbox for the secure sign-in link.", "success");
+    });
+
+    elements.signOutButton.addEventListener("click", async () => {
+      if (!db) return;
+      await db.auth.signOut();
+    });
+
+    elements.copyButton.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(elements.handoff.textContent);
+        alert("AI handoff copied.");
+      } catch {
+        alert("Copy was blocked. You can select the text manually.");
+      }
+    });
+
+    window.addEventListener("online", async () => {
+      setSyncStatus("Connection restored; checking pending sync…");
+      if (localStorage.getItem(LOCAL_PENDING_KEY)) await saveCheckpoint();
+    });
+
+    window.addEventListener("offline", () => {
+      setSyncStatus("Offline: changes remain stored on this device.", "warning");
+    });
+
+    initialize();
+  </script>
+</body>
+</html>  
