@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YachtCoreOS Project Assistant</title>
+
+  <style>
+    :root {
+      --bg: #07121c;
+      --panel: #0d1c28;
+      --panel2: #102433;
+      --text: #eef7ff;
+      --muted: #9fb6c8;
+      --border: #284153;
+
+      --complete: #2cc970;
+      --current: #f5b942;
+      --next: #54a7ff;
+      --future: #7e8a97;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #06111a, #0a1b27);
+      color: var(--text);
+    }
+
+    .app {
+      max-width: 1100px;
+      margin: auto;
+      padding: 24px;
+    }
+
+    h1 {
+      margin-bottom: 6px;
+      font-size: 36px;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .metrics {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .value {
+      font-size: 22px;
+      font-weight: bold;
+      margin-top: 6px;
+    }
+
+    .timeline {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .step {
+      border-radius: 14px;
+      padding: 16px;
+      cursor: pointer;
+      border: 2px solid var(--border);
+      background: var(--panel2);
+      transition: 0.2s ease;
+    }
+
+    .step:hover {
+      transform: translateY(-2px);
+    }
+
+    .step.complete {
+      border-color: var(--complete);
+    }
+
+    .step.current {
+      border-color: var(--current);
+      background: rgba(245, 185, 66, 0.08);
+    }
+
+    .step.next {
+      border-color: var(--next);
+    }
+
+    .step.future {
+      border-color: var(--future);
+      opacity: 0.8;
+    }
+
+    .step-number {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .step-name {
+      font-size: 17px;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    .step-dept {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    .status {
+      margin-top: 10px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .complete .status {
+      color: var(--complete);
+    }
+
+    .current .status {
+      color: var(--current);
+    }
+
+    .next .status {
+      color: var(--next);
+    }
+
+    .future .status {
+      color: var(--future);
+    }
+
+    .details {
+      margin-top: 24px;
+    }
+
+    .handoff {
+      white-space: pre-wrap;
+      background: #07131c;
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 12px;
+      font-family: monospace;
+      line-height: 1.5;
+    }
+
+    button {
+      margin-top: 14px;
+      background: #35d0ba;
+      color: #05241f;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    @media (max-width: 800px) {
+      .metrics,
+      .timeline {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .metrics,
+      .timeline {
+        grid-template-columns: 1fr;
+      }
+
+      .app {
+        padding: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+
+    <h1>⚓ YachtCoreOS Project Assistant</h1>
+
+    <div class="subtitle">
+      Know what we are building, where we are, what is complete, and what comes next.
+    </div>
+
+    <div class="grid metrics">
+
+      <div class="card">
+        <div class="label">ACTIVE PROJECT</div>
+        <div class="value">Stew Inquiry & Job Application Toolkit</div>
+      </div>
+
+      <div class="card">
+        <div class="label">CURRENT STAGE</div>
+        <div class="value" id="currentStage">Launch</div>
+      </div>
+
+      <div class="card">
+        <div class="label">COMMERCIAL PATH</div>
+        <div class="value">$29 → $79 → $299 → $995</div>
+      </div>
+
+    </div>
+
+    <div class="card details">
+
+      <h2>Project Map</h2>
+
+      <div class="timeline" id="timeline"></div>
+
+    </div>
+
+    <div class="card details">
+
+      <h2>Selected Stage</h2>
+
+      <div id="stageDetails"></div>
+
+    </div>
+
+    <div class="card details">
+
+      <h2>AI Handoff</h2>
+
+      <div class="handoff" id="handoff"></div>
+
+      <button id="copyButton">
+        Copy AI Handoff
+      </button>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    const stages = [
+
+      {
+        name: "Idea",
+        department: "Product / Manager",
+        status: "complete",
+        question:
+          "What painful problem are we solving, for whom, and what is the smallest sellable result?"
+      },
+
+      {
+        name: "Product",
+        department: "Product / Manager",
+        status: "complete",
+        question:
+          "What exactly belongs in the MVP and what should stay out?"
+      },
+
+      {
+        name: "Finance",
+        department: "Finance",
+        status: "complete",
+        question:
+          "Who pays, how much, and what is the shortest realistic path to revenue?"
+      },
+
+      {
+        name: "Architecture",
+        department: "Architecture & Security",
+        status: "complete",
+        question:
+          "What technical structure is necessary to sell this safely?"
+      },
+
+      {
+        name: "Reliability",
+        department: "Offline / Sync",
+        status: "next",
+        question:
+          "What must work without connectivity now, and what can safely wait?"
+      },
+
+      {
+        name: "Build",
+        department: "Development",
+        status: "current",
+        question:
+          "What is missing between the current files and a customer-ready product?"
+      },
+
+      {
+        name: "Payments",
+        department: "Stripe / Infrastructure",
+        status: "current",
+        question:
+          "Can a real customer pay and receive exactly what was promised?"
+      },
+
+      {
+        name: "Launch",
+        department: "Sales / Operations",
+        status: "current",
+        question:
+          "Which audience can see, understand, and buy this immediately?"
+      },
+
+      {
+        name: "Evaluate",
+        department: "Evaluation",
+        status: "next",
+        question:
+          "What do visitors, purchases, objections, and usage tell us?"
+      },
+
+      {
+        name: "Adapt",
+        department: "Adaptation",
+        status: "future",
+        question:
+          "What should change based on the evidence?"
+      },
+
+      {
+        name: "Adjust",
+        department: "Adjustment",
+        status: "future",
+        question:
+          "What approved change should we execute and measure next?"
+      }
+
+    ];
+
+    const savedStage =
+      localStorage.getItem("yachtcoreos-current-stage");
+
+    let selectedIndex =
+      savedStage !== null ? Number(savedStage) : 7;
+
+    const timeline =
+      document.getElementById("timeline");
+
+    const stageDetails =
+      document.getElementById("stageDetails");
+
+    const handoff =
+      document.getElementById("handoff");
+
+    const currentStage =
+      document.getElementById("currentStage");
+
+    function render() {
+
+      timeline.innerHTML = "";
+
+      stages.forEach((stage, index) => {
+
+        const div =
+          document.createElement("div");
+
+        div.className =
+          "step " + stage.status;
+
+        div.innerHTML = `
+          <div class="step-number">
+            Stage ${index + 1}
+          </div>
+
+          <div class="step-name">
+            ${stage.name}
+          </div>
+
+          <div class="step-dept">
+            ${stage.department}
+          </div>
+
+          <div class="status">
+            ${stage.status.toUpperCase()}
+          </div>
+        `;
+
+        if (index === selectedIndex) {
+          div.style.outline =
+            "3px solid #35d0ba";
+        }
+
+        div.addEventListener(
+          "click",
+          () => {
+
+            selectedIndex = index;
+
+            localStorage.setItem(
+              "yachtcoreos-current-stage",
+              index
+            );
+
+            render();
+          }
+        );
+
+        timeline.appendChild(div);
+
+      });
+
+      const stage =
+        stages[selectedIndex];
+
+      currentStage.textContent =
+        stage.name;
+
+      stageDetails.innerHTML = `
+        <p>
+          <strong>Department:</strong>
+          ${stage.department}
+        </p>
+
+        <p>
+          <strong>Status:</strong>
+          ${stage.status}
+        </p>
+
+        <p>
+          <strong>Main question:</strong><br>
+          ${stage.question}
+        </p>
+      `;
+
+      const completed =
+        stages
+          .filter(s => s.status === "complete")
+          .map(s => s.name)
+          .join(", ");
+
+      const next =
+        stages[selectedIndex + 1];
+
+      handoff.textContent =
+`YACHTCOREOS AI HANDOFF
+
+ACTIVE PROJECT
+Stew Inquiry & Job Application Toolkit
+
+CURRENT POSITION
+Stage ${selectedIndex + 1} of ${stages.length}
+${stage.name}
+
+DEPARTMENT
+${stage.department}
+
+STATUS
+${stage.status.toUpperCase()}
+
+COMPLETED
+${completed}
+
+QUESTION FOR THIS AI
+${stage.question}
+
+NEXT STEP
+${next ? next.name + " — " + next.department : "Return to Evaluation and continue the feedback loop."}
+
+RULE
+Do not describe anything as implemented, deployed, or verified without direct evidence from the actual source files, live deployment, or end-to-end test.`;
+
+    }
+
+    document
+      .getElementById("copyButton")
+      .addEventListener(
+        "click",
+        async () => {
+
+          try {
+
+            await navigator.clipboard.writeText(
+              handoff.textContent
+            );
+
+            alert(
+              "AI handoff copied."
+            );
+
+          } catch {
+
+            alert(
+              "Copy was blocked. You can select the text manually."
+            );
+
+          }
+
+        }
+      );
+
+    render();
+
+  </script>
+</body>
+</html> 
