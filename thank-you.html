@@ -3,117 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Payment Successful – YachtCoreOS</title>
+  <title>YachtCoreOS Test Checkout Complete</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }<script defer src="/_vercel/insights/script.js"></script>
-    
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background: #0f172a;
-      color: #e2e8f0;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .card {
-      background: rgba(30, 41, 59, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 48px 40px;
-      max-width: 520px;
-      width: 100%;
-      text-align: center;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
-    }
-
-    .success-icon {
-      width: 72px;
-      height: 72px;
-      background: linear-gradient(135deg, #0f766e, #14b8a6);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 28px;
-      font-size: 36px;
-    }
-
-    h1 {
-      font-size: 28px;
-      font-weight: 700;
-      color: #f1f5f9;
-      margin-bottom: 12px;
-    }
-
-    .subtitle {
-      color: #94a3b8;
-      font-size: 16px;
-      line-height: 1.6;
-      margin-bottom: 32px;
-    }
-
-    .btn {
-      display: inline-block;
-      background: linear-gradient(135deg, #0f766e, #0d9488);
-      color: white;
-      text-decoration: none;
-      padding: 16px 32px;
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 16px;
-      transition: all 0.25s ease;
-      box-shadow: 0 4px 14px rgba(15, 118, 110, 0.4);
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(15, 118, 110, 0.5);
-      filter: brightness(1.1);
-    }
-
-    .secondary {
-      margin-top: 24px;
-      font-size: 14px;
-      color: #64748b;
-    }
-
-    .secondary a {
-      color: #38bdf8;
-      text-decoration: none;
-    }
-
-    .secondary a:hover {
-      text-decoration: underline;
-    }
+    *{box-sizing:border-box} body{margin:0;min-height:100vh;display:grid;place-items:center;padding:20px;font-family:Inter,Arial,sans-serif;background:linear-gradient(180deg,#06111c,#0b2233);color:#eff8ff}.card{width:min(600px,100%);padding:30px;border:1px solid #2b4b61;border-radius:20px;background:#102638;text-align:center}.badge{display:inline-block;padding:7px 11px;border-radius:999px;background:#7d4d00;font-weight:800;font-size:12px}.brand{color:#39d1bb;font-size:13px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-top:20px}h1{font-size:clamp(30px,7vw,46px);margin:8px 0}.lead{color:#a9bece;line-height:1.55}.btn{display:block;margin-top:20px;padding:15px 18px;border-radius:12px;background:#39d1bb;color:#04241f;text-decoration:none;font-weight:900}.secondary{display:inline-block;margin-top:16px;color:#c6d6e2}.fine{margin-top:18px;color:#a9bece;font-size:12px;line-height:1.5}
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="success-icon">✓</div>
-    
-    <h1>Payment Successful</h1>
-    
-    <p class="subtitle">
-      Thank you for your purchase.<br>
-      Your access to the Stew-Captain Inquiry Form is now ready.
-    </p>
-
-    <!-- 
-      IMPORTANT: Replace the href below with the correct form URL
-      Examples:
-      - Short Captain form (button version)
-      - Or the long form if that's the one you want to use for now
-    -->
-    <a href="stew-inquiry-full.html" class="btn">Open Stew-Captain Form →
-    </a>
-
-    <p class="secondary">
-      Need help? Contact us at 
-      <a href="mailto:yachtcoreconnect@yachtcoreos.com">yachtcoreconnect@yachtcoreos.com</a>
-    </p>
-  </div>
+  <main class="card">
+    <div class="badge">TEST MODE ONLY</div>
+    <div class="brand">YachtCoreOS</div>
+    <h1>Test checkout complete</h1>
+    <p class="lead">The next step is to verify the working Stew–Captain Form and generate a sample “Looking for Crew” brief.</p>
+    <a class="btn" href="stew-inquiry-full.html">Open Test Form</a>
+    <a class="secondary" href="stew-inquiry-demo.html">Return to Demo</a>
+    <p class="fine">This page is a test-delivery checkpoint. It is not proof of a real payment or a production entitlement system.</p>
+  </main>
 </body>
-</html> 
+</html>
