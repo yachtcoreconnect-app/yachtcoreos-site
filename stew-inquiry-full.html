@@ -1,270 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YachtCoreOS | Certified Stew Inquiry</title>
-    <style>
-        :root {
-            --primary: #0f172a;
-            --accent: #0284c7;
-            --bg: #f1f5f9;
-            --card-bg: #ffffff;
-            --text: #334155;
-            --border: #cbd5e1;
-            --active-bg: #e0f2fe;
-            --active-border: #0284c7;
-        }<script defer src="/_vercel/insights/script.js"></script>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .container {
-            width: 100%;
-            max-width: 860px;
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-        }
-        h2 {
-            color: var(--primary);
-            margin-top: 0;
-            font-size: 20px;
-            text-align: center;
-            margin-bottom: 4px;
-        }
-        .subtitle {
-            text-align: center;
-            font-size: 12px;
-            color: #64748b;
-            margin-bottom: 16px;
-        }
-        .grid-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-        @media (max-width: 768px) {
-            .grid-row {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        @media (max-width: 480px) {
-            .grid-row {
-                grid-template-columns: 1fr;
-            }
-        }
-        .field-box {
-            background: #f8fafc;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 8px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .field-box input[type="text"], .field-box input[type="date"] {
-            border: none;
-            background: transparent;
-            font-size: 13px;
-            color: var(--text);
-            outline: none;
-            width: 100%;
-            padding: 2px 0;
-        }
-        .field-box input::placeholder {
-            color: #94a3b8;
-            font-weight: 500;
-        }
-        .pill-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            margin-top: 6px;
-        }
-        .pill {
-            font-size: 11px;
-            padding: 3px 8px;
-            background: #ffffff;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.15s ease;
-        }
-        .pill:hover {
-            border-color: var(--accent);
-        }
-        .pill.selected {
-            background: var(--active-bg);
-            border-color: var(--active-border);
-            color: var(--accent);
-            font-weight: 600;
-        }
-        .other-input {
-            display: none;
-            margin-top: 6px;
-            width: 100%;
-            padding: 4px 6px;
-            font-size: 11px;
-            border: 1px solid var(--accent);
-            border-radius: 4px;
-            outline: none;
-            box-sizing: border-box;
-        }
-        .action-group {
-            display: flex;
-            gap: 8px;
-            margin-top: 14px;
-        }
-        button.action-btn {
-            flex: 1;
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            padding: 12px;
-            font-size: 13px;
-            font-weight: 600;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        button.action-btn:hover {
-            background-color: #0369a1;
-        }
-        button.secondary-btn {
-            background-color: #475569;
-        }
-        button.secondary-btn:hover {
-            background-color: #334155;
-        }
-        #locked-screen {
-            display: none;
-            text-align: center;
-            background: #ffeeee;
-            color: #cc0000;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #ffcccc;
-        }
-        .branding {
-            text-align: center;
-            font-size: 10px;
-            color: #94a3b8;
-            margin-top: 12px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YachtCoreOS | Stew–Captain Hiring Form</title>
+  <style>
+    :root { --navy:#071522; --panel:#102638; --line:#2b4b61; --text:#eff8ff; --muted:#a9bece; --aqua:#39d1bb; --gold:#f4ba55; --danger:#ff7777; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; font-family:Inter,Arial,sans-serif; background:linear-gradient(180deg,#06111c,#0b2233); color:var(--text); }
+    .test-banner { padding:10px 16px; text-align:center; background:#7d4d00; font-weight:800; }
+    .page { width:min(900px,100%); margin:auto; padding:26px 18px 60px; }
+    .brand { color:var(--aqua); font-size:13px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+    h1 { margin:8px 0 4px; font-size:clamp(28px,6vw,44px); }
+    h2 { margin:0 0 8px; }
+    .lead,.fine { color:var(--muted); line-height:1.5; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:22px; }
+    .card { padding:18px; background:var(--panel); border:1px solid var(--line); border-radius:16px; }
+    .wide { grid-column:1/-1; }
+    label { display:block; color:var(--muted); font-size:13px; font-weight:800; margin-bottom:7px; }
+    input,select,textarea { width:100%; padding:12px; border:1px solid #45667b; border-radius:10px; background:#081b29; color:var(--text); font:inherit; }
+    textarea { min-height:98px; resize:vertical; }
+    .actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+    button { padding:12px 16px; border:1px solid var(--line); border-radius:11px; background:#132f43; color:var(--text); font-weight:900; cursor:pointer; }
+    button.primary { background:var(--aqua); border-color:var(--aqua); color:#04241f; }
+    button.danger { color:var(--danger); }
+    .output { display:none; margin-top:24px; }
+    .output.visible { display:block; }
+    pre { white-space:pre-wrap; overflow-wrap:anywhere; padding:20px; border:1px dashed var(--gold); border-radius:14px; background:#06131e; color:var(--text); line-height:1.5; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .status { min-height:20px; margin-top:10px; color:var(--aqua); font-size:13px; }
+    @media(max-width:680px){ .grid{grid-template-columns:1fr}.wide{grid-column:auto} }
+  </style>
 </head>
 <body>
+  <div class="test-banner">TEST BRANCH · Local processing only · No form information is transmitted</div>
+  <main class="page">
+    <div class="brand">YachtCoreOS</div>
+    <h1>Stew–Captain Hiring Inquiry</h1>
+    <p class="lead">Complete the hiring details once. YachtCoreOS generates a structured “Looking for Crew” brief ready to copy or download.</p>
 
-<div class="container" id="app-container">
-    <!-- SECURITY LOCK SCREEN -->
-    <div id="locked-screen">
-        <h2 style="color:#cc0000;">Form Locked</h2>
-        <p id="lock-reason">This form is no longer available.</p>
-    </div>
+    <form id="hiringForm">
+      <div class="grid">
+        <div class="card"><label for="vessel">Vessel name or confidential label</label><input id="vessel" name="vessel" placeholder="M/Y Confidential" required></div>
+        <div class="card"><label for="loa">Vessel size</label><input id="loa" name="loa" placeholder="100+ ft" required></div>
+        <div class="card"><label for="position">Position</label><input id="position" name="position" placeholder="Captain, Chief Stew, Deck/Stew…" required></div>
+        <div class="card"><label for="program">Program</label><select id="program" name="program"><option>Private</option><option>Charter</option><option>Private / Charter</option><option>Other</option></select></div>
+        <div class="card"><label for="contract">Contract</label><select id="contract" name="contract"><option>Full-time</option><option>Part-time</option><option>Temporary</option><option>Seasonal</option><option>Rotation</option></select></div>
+        <div class="card"><label for="start">Start / availability</label><input id="start" name="start" placeholder="Immediate or target date"></div>
+        <div class="card"><label for="base">Base / current location</label><input id="base" name="base" placeholder="Fort Lauderdale, Florida" required></div>
+        <div class="card"><label for="schedule">Schedule</label><input id="schedule" name="schedule" placeholder="Flexible, live aboard, 2:2…"></div>
+        <div class="card wide"><label for="route">Passage or itinerary</label><input id="route" name="route" placeholder="Mexico–Florida passage, Bahamas season…"></div>
+        <div class="card wide"><label for="experience">Required experience</label><textarea id="experience" name="experience" placeholder="Similar-size vessels, private program, passage experience…"></textarea></div>
+        <div class="card wide"><label for="credentials">Credentials / certifications</label><textarea id="credentials" name="credentials" placeholder="USCG credentials, STCW, ENG1, visa or flag requirements…"></textarea></div>
+        <div class="card wide"><label for="duties">Responsibilities and technical expectations</label><textarea id="duties" name="duties" placeholder="Operations, maintenance oversight, guest service, team building…"></textarea></div>
+        <div class="card"><label for="compensation">Compensation</label><input id="compensation" name="compensation" placeholder="Weekly/monthly rate or DOE"></div>
+        <div class="card"><label for="expenses">Travel / benefits / perks</label><input id="expenses" name="expenses" placeholder="Travel covered, insurance, tips…"></div>
+        <div class="card"><label for="references">References</label><select id="references" name="references"><option>Required</option><option>Preferred</option><option>Not requested initially</option></select></div>
+        <div class="card"><label for="contact">Application contact</label><input id="contact" name="contact" type="email" placeholder="hiring@example.com" required></div>
+        <div class="card wide"><label for="apply">What applicants should include</label><textarea id="apply" name="apply" placeholder="CV, credentials, relevant experience, location, availability, references, compensation expectations…"></textarea></div>
+        <div class="card wide"><label for="notes">Additional notes</label><textarea id="notes" name="notes" placeholder="Trial period, long-term opportunity, confidentiality…"></textarea></div>
+      </div>
+      <div class="actions">
+        <button class="primary" type="submit">Generate Crew Brief</button>
+        <button type="button" id="saveDraft">Save Draft on This Device</button>
+        <button class="danger" type="button" id="clearDraft">Clear</button>
+      </div>
+      <div class="status" id="status" aria-live="polite"></div>
+    </form>
 
-    <!-- ACTIVE FORM -->
-    <div id="active-form-wrapper">
-        <h2>YachtCoreOS Stew Inquiry</h2>
-        <div class="subtitle">Certified Direct-to-Stew Transmission Pipeline</div>
+    <section class="output card" id="outputSection">
+      <h2>Ready-to-post crew brief</h2>
+      <p class="fine">Review every detail before sharing. YachtCoreOS does not verify credentials, licenses, vessel facts, or employment terms.</p>
+      <pre id="brief"></pre>
+      <div class="actions"><button class="primary" id="copyBrief" type="button">Copy Brief</button><button id="downloadBrief" type="button">Download .txt</button></div>
+    </section>
+  </main>
+  <script>
+    'use strict';
+    const form = document.getElementById('hiringForm');
+    const status = document.getElementById('status');
+    const output = document.getElementById('outputSection');
+    const brief = document.getElementById('brief');
+    const draftKey = 'yachtcoreos-stew-captain-draft-v1';
 
-        <form id="stewForm" action="https://formspree.io/f/your-form-endpoint-here" method="POST">
-            <input type="hidden" id="tokenField" name="security_token" value="">
-            <input type="hidden" id="stewEmailField" name="stew_destination" value="">
-
-            <div class="grid-row">
-                <div class="field-box"><input type="text" name="vessel_size" placeholder="Vessel Size (e.g. 150ft)"></div>
-                <div class="field-box"><input type="text" name="vessel_flag" placeholder="Flag (e.g. Marshall Islands)"></div>
-                <div class="field-box"><input type="text" name="vessel_year" placeholder="Year Built"></div>
-                <div class="field-box"><input type="text" name="vessel_make" placeholder="Make / Builder"></div>
-            </div>
-
-            <div class="grid-row">
-                <div class="field-box" style="grid-column: span 4;">
-                    <span style="font-size: 11px; font-weight: 600; color: #64748b;">Program Structure</span>
-                    <div class="pill-container" data-name="program_type">
-                        <span class="pill" onclick="selectPill(this)">Private</span>
-                        <span class="pill" onclick="selectPill(this)">Charter</span>
-                        <span class="pill" onclick="selectPill(this)">Hybrid</span>
-                        <span class="pill" onclick="selectPill(this, true)">Other Program</span>
-                    </div>
-                    <input type="text" class="other-input" placeholder="Specify program details...">
-                </div>
-            </div>
-
-            <div class="grid-row">
-                <div class="field-box" style="grid-column: span 4;">
-                    <span style="font-size: 11px; font-weight: 600; color: #64748b;">Contract Duration</span>
-                    <div class="pill-container" data-name="contract_term">
-                        <span class="pill" onclick="selectPill(this)">Temporary</span>
-                        <span class="pill" onclick="selectPill(this)">Part-Time</span>
-                        <span class="pill" onclick="selectPill(this)">Full-Time</span>
-                        <span class="pill" onclick="selectPill(this)">Seasonal</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid-row">
-                <div class="field-box" style="grid-column: span 4;">
-                    <span style="font-size: 11px; font-weight: 600; color: #64748b;">Usage Intensity</span>
-                    <div class="pill-container" data-name="usage_intensity">
-                        <span class="pill" onclick="selectPill(this)">Light Use</span>
-                        <span class="pill" onclick="selectPill(this)">Moderate Use</span>
-                        <span class="pill" onclick="selectPill(this)">Heavy Use</span>
-                        <span class="pill" onclick="selectPill(this)">Live-Aboard</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid-row">
-                <div class="field-box" style="grid-column: span 4;">
-                    <span style="font-size: 11px; font-weight: 600; color: #64748b;">Primary Location / Port</span>
-                    <div class="pill-container" data-name="location">
-                        <span class="pill" onclick="selectPill(this)">Miami</span>
-                        <span class="pill" onclick="selectPill(this)">Fort Lauderdale</span>
-                        <span class="pill" onclick="selectPill(this)">West Palm</span>
-                        <span class="pill" onclick="selectPill(this)">New York</span>
-                        <span class="pill" onclick="selectPill(this, true)">Other Port</span>
-                    </div>
-                    <input type="text" class="other-input" placeholder="Specify port...">
-                </div>
-            </div>
-
-            <div class="grid-row">
-                <div class="field-box" style="grid-column: span 4;">
-                    <span style="font-size: 11px; font-weight: 600; color: #64748b;">Crew Complement</span>
-                    <div class="pill-container" data-name="crew_size">
-                        <span class="pill" onclick="selectPill(this)">2 Crew</span>
-                        <span class="pill" onclick="selectPill(this)">3 Crew</span>
-                        <span class="pill" onclick="selectPill(this)">4 Crew</span>
-                        <span class="pill" onclick="selectPill(this, true)">Total / Other</span>
-                    </div>
-                    <input type="text" class="other-input" placeholder="Specify crew total...">
-                </div>
-            </div>
-
-            <div class="grid-row">
-                <div class="field-box"><input type="text" name="prev_pay" placeholder="Prev. Pay Rate"></div>
-                <div class="field-box"><input type="text" name="current_offer" placeholder="Current Offer ($)"></div>
-                <div class="field-box"><input type="text" name="med_ins" placeholder="Med Ins Included?"></div>
-                <div class="field-box"><input type="text" name="comp_other" placeholder="Other Perks / Tips"></div>
-            </div>
-
-            <div class="grid-row">
-                <div class="field-box"><input type="text" name="start_date" placeholder="Start Date"></div>
-                <div class="field-box"><input type="text" name="finish_date" placeholder="Finish Date"></div>
-                <div class="field-box"><input type="text" name="date_from" placeholder="From..."></div>
-                <div class="field-box"><input type="text" name="date_to" placeholder="To..."></div>
-            </div>
-
-            <div class="grid-row"> 
+    const clean = value => String(value || '').trim();
+    const line = (label, value) => clean(value) ? `${label}: ${clean(value)}` : '';
+    function values() { return Object.fromEntries(new FormData(form).entries()); }
+    function buildBrief(data) {
+      return [
+        `${clean(data.position).toUpperCase()} — ${clean(data.contract).toUpperCase()} OPPORTUNITY`,
+        '',
+        `${clean(data.vessel)} | ${clean(data.loa)} | ${clean(data.program)} program`,
+        line('Base', data.base), line('Start / availability', data.start), line('Schedule', data.schedule), line('Passage / itinerary', data.route),
+        '', 'POSITION DETAILS',
+        line('Required experience', data.experience), line('Credentials', data.credentials), line('Responsibilities', data.duties),
+        line('Compensation', data.compensation), line('Travel / benefits / perks', data.expenses), line('References', data.references),
+        '', 'HOW TO APPLY',
+        clean(data.apply) || 'Send your CV, relevant experience, current location, availability, references, and compensation expectations.',
+        line('Contact', data.contact),
+        clean(data.notes) ? `\nADDITIONAL NOTES\n${clean(data.notes)}` : ''
+      ].filter(Boolean).join('\n');
+    }
+    function saveDraft() { localStorage.setItem(draftKey, JSON.stringify(values())); status.textContent = 'Draft saved on this device.'; }
+    function loadDraft() {
+      try { const data = JSON.parse(localStorage.getItem(draftKey) || '{}'); Object.entries(data).forEach(([key,value]) => { if (form.elements[key]) form.elements[key].value = value; }); }
+      catch { localStorage.removeItem(draftKey); }
+    }
+    form.addEventListener('submit', event => { event.preventDefault(); if (!form.reportValidity()) return; brief.textContent = buildBrief(values()); output.classList.add('visible'); output.scrollIntoView({behavior:'smooth'}); status.textContent = 'Crew brief generated locally.'; });
+    document.getElementById('saveDraft').addEventListener('click', saveDraft);
+    document.getElementById('clearDraft').addEventListener('click', () => { if (!confirm('Clear this form and its local draft?')) return; form.reset(); localStorage.removeItem(draftKey); output.classList.remove('visible'); status.textContent = 'Form cleared.'; });
+    document.getElementById('copyBrief').addEventListener('click', async () => { try { await navigator.clipboard.writeText(brief.textContent); status.textContent = 'Crew brief copied.'; } catch { status.textContent = 'Copy was blocked. Select the brief manually.'; } });
+    document.getElementById('downloadBrief').addEventListener('click', () => { const blob = new Blob([brief.textContent],{type:'text/plain'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='YachtCoreOS-Crew-Brief.txt'; a.click(); URL.revokeObjectURL(url); status.textContent='Crew brief downloaded.'; });
+    loadDraft();
+  </script>
+</body>
+</html>
