@@ -1,179 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YachtCoreOS Stew Inquiry - DEMO MODE</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Smooth transitions for button clicks */
-        .option-btn {
-            transition: all 0.2s ease;
-        }
-        .option-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-        .option-btn.selected {
-            background-color: #6d4aff; /* Proton Purple */
-            color: white;
-            border-color: #6d4aff;
-        }
-        /* Demo Banner Style */
-        .demo-banner {
-            background: linear-gradient(90deg, #ff6b6b, #ee5a5a);
-            color: white;
-            font-weight: bold;
-            text-align: center;
-            padding: 10px;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-    </style>
-</head><script defer src="/_vercel/insights/script.js"></script>
-<body class="bg-gray-50 min-h-screen font-sans">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YachtCoreOS Stew–Captain Form — Demo</title>
+  <style>
+    :root { --navy:#081827; --panel:#102638; --line:#29465b; --text:#eff8ff; --muted:#a9bece; --aqua:#39d1bb; --gold:#f4ba55; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; font-family:Inter,Arial,sans-serif; background:linear-gradient(180deg,#06111c,#0b2233); color:var(--text); }
+    .banner { padding:10px 16px; text-align:center; background:#a43b3b; font-weight:800; }
+    .page { width:min(760px,100%); margin:auto; padding:28px 18px 52px; }
+    .brand { color:var(--aqua); font-size:13px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+    h1 { margin:8px 0 6px; font-size:clamp(30px,7vw,48px); }
+    .lead { color:var(--muted); line-height:1.55; margin:0 0 22px; }
+    .card { padding:20px; margin-top:14px; background:var(--panel); border:1px solid var(--line); border-radius:18px; }
+    .label { color:var(--muted); font-size:13px; font-weight:700; margin-bottom:9px; }
+    .options { display:flex; flex-wrap:wrap; gap:8px; }
+    .option { border:1px solid #45667b; background:#0a1c2a; color:var(--text); border-radius:999px; padding:10px 13px; cursor:pointer; font-weight:700; }
+    .option.selected { background:var(--aqua); border-color:var(--aqua); color:#04241f; }
+    .preview { margin-top:22px; padding:20px; border:1px dashed var(--gold); border-radius:16px; background:rgba(244,186,85,.07); }
+    .preview strong { color:var(--gold); }
+    .cta { display:block; width:100%; margin-top:20px; padding:15px 18px; border:0; border-radius:12px; text-align:center; text-decoration:none; background:var(--aqua); color:#04241f; font-weight:900; }
+    .cta[aria-disabled="true"] { background:#536776; color:#d7e1e8; cursor:not-allowed; }
+    .fine { margin:10px 2px 0; color:var(--muted); text-align:center; font-size:12px; line-height:1.45; }
+  </style>
+</head>
+<body>
+  <div class="banner">DEMO MODE · No information is saved or transmitted</div>
+  <main class="page">
+    <div class="brand">YachtCoreOS</div>
+    <h1>Stew–Captain Form</h1>
+    <p class="lead">Turn scattered hiring questions into one organized inquiry and a ready-to-post crew brief.</p>
 
-    <!-- DEMO BANNER -->
-    <div class="demo-banner">
-        🎥 DEMO MODE: This is an interactive preview. No data is being sent.
-    </div>
+    <section class="card">
+      <div class="label">PROGRAM</div>
+      <div class="options"><button class="option">Private</button><button class="option">Charter</button><button class="option">Private / Charter</button></div>
+    </section>
+    <section class="card">
+      <div class="label">CONTRACT</div>
+      <div class="options"><button class="option">Temporary</button><button class="option">Part-time</button><button class="option">Full-time</button><button class="option">Seasonal</button></div>
+    </section>
+    <section class="card">
+      <div class="label">BASE / LOCATION</div>
+      <div class="options"><button class="option">Miami</button><button class="option">Fort Lauderdale</button><button class="option">West Palm Beach</button><button class="option">Other</button></div>
+    </section>
+    <section class="card">
+      <div class="label">INCLUDED IN THE FULL FORM</div>
+      <div class="options"><button class="option">Vessel details</button><button class="option">Position</button><button class="option">Schedule</button><button class="option">Compensation</button><button class="option">Credentials</button><button class="option">References</button></div>
+    </section>
 
-    <div class="max-w-2xl mx-auto py-8 px-4">
-        
-        <!-- Header -->
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-900">YachtCoreOS Stew Inquiry</h1>
-            <p class="text-gray-500 mt-2">Certified Direct-to-Stew Transmission Pipeline</p>
-        </div>
+    <section class="preview">
+      <strong>Output:</strong> a clean “Looking for Crew” brief that can be copied, downloaded, emailed, or posted.
+    </section>
 
-        <!-- Form Container -->
-        <div class="bg-white rounded-xl shadow-lg p-6 space-y-6">
-            
-            <!-- Text Inputs (Read-only for demo) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 opacity-75 pointer-events-none select-none">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Vessel Size (e.g. 150ft)</label>
-                    <input type="text" value="150ft" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Flag (e.g. Marshall Islands)</label>
-                    <input type="text" value="Marshall Islands" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Year Built</label>
-                    <input type="text" value="2018" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Make / Builder</label>
-                    <input type="text" value="Heesen" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
-                </div>
-            </div>
-
-            <!-- Interactive Button Sections -->
-            
-            <!-- Program Structure -->
-            <div>
-                <label class="block text-sm font-semibold text-gray-800 mb-3">Program Structure</label>
-                <div class="flex flex-wrap gap-2" id="program-group">
-                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Private</button>
-                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Charter</button>
-                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Hybrid</button>
-                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Other Program</button>
-                </div>
-            </div>
-
-            <!-- Contract Duration -->
-            <div>
-                <label class="block text-sm font-semibold text-gray-800 mb-3">Contract Duration</label>
-                <div class="flex flex-wrap gap-2" id="contract-group">
-                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Temporary</button>
-                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Part-Time</button>
-                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Full-Time</button>
-                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Seasonal</button>
-                </div>
-            </div>
-
-            <!-- Usage Intensity -->
-            <div>
-                <label class="block text-sm font-semibold text-gray-800 mb-3">Usage Intensity</label>
-                <div class="flex flex-wrap gap-2" id="usage-group">
-                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Light Use</button>
-                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Moderate Use</button>
-                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Heavy Use</button>
-                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Live-Aboard</button>
-                </div>
-            </div>
-
-            <!-- Primary Location -->
-            <div>
-                <label class="block text-sm font-semibold text-gray-800 mb-3">Primary Location / Port</label>
-                <div class="flex flex-wrap gap-2" id="location-group">
-                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Miami</button>
-                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Fort Lauderdale</button>
-                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">West Palm</button>
-                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">New York</button>
-                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Other Port</button>
-                </div>
-            </div>
-
-            <!-- Crew Complement -->
-            <div>
-                <label class="block text-sm font-semibold text-gray-800 mb-3">Crew Complement</label>
-                <div class="flex flex-wrap gap-2" id="crew-group">
-                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">2 Crew</button>
-                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">3 Crew</button>
-                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">4 Crew</button>
-                    <button class="option-btn px-4 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:border-purple-500" onclick="selectOption(this)">Total / Other</button>
-                </div>
-            </div>
-
-            <!-- Read-only inputs below -->
-            <div class="opacity-75 pointer-events-none select-none">
-                <label class="block text-sm font-medium text-gray-700 mb-1">Prev. Pay Rate</label>
-                <input type="text" value="$4,500/mo" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed mb-3">
-                
-                <label class="block text-sm font-medium text-gray-700 mb-1">Current Offer ($)</label>
-                <input type="text" value="$5,200/mo" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed mb-3">
-                
-                <label class="block text-sm font-medium text-gray-700 mb-1">Med Ins Included?</label>
-                <input type="text" value="Yes" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed mb-3">
-                
-                <label class="block text-sm font-medium text-gray-700 mb-1">Other Perks / Tips</label>
-                <textarea class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed h-20">Bonus structure included</textarea>
-            </div>
-
-            <!-- Submit Button (Disabled) -->
-            <div class="pt-4">
-                <button disabled class="w-full bg-gray-300 text-gray-500 font-bold py-3 px-4 rounded-lg cursor-not-allowed flex justify-center items-center">
-                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    DEMO MODE: Submission Disabled
-                </button>
-                <p class="text-xs text-center text-gray-400 mt-2">Connect to YachtCoreOS network to activate submission.</p>
-            </div>
-
-        </div>
-    </div>
-
-    <script>
-        function selectOption(btn) {
-            // Find the parent group container
-            const parent = btn.parentElement;
-            
-            // Remove 'selected' class from all siblings in this group
-            const siblings = parent.querySelectorAll('.option-btn');
-            siblings.forEach(sib => sib.classList.remove('selected'));
-            
-            // Add 'selected' class to clicked button
-            btn.classList.add('selected');
-            
-            // Optional: Visual feedback log for the demo
-            console.log("Selected:", btn.innerText);
-        }
-    </script>
+    <!-- CHECKOUT_TEST_URL: replace only with a Stripe TEST-mode Payment Link verified in Stripe Dashboard. -->
+    <a id="checkoutButton" class="cta" href="#" aria-disabled="true">Test checkout not configured</a>
+    <p class="fine">Test branch only. No live payment link is enabled. Approved price: $19 one-time.</p>
+  </main>
+  <script>
+    document.querySelectorAll('.option').forEach(button => button.addEventListener('click', () => button.classList.toggle('selected')));
+    document.getElementById('checkoutButton').addEventListener('click', event => {
+      if (event.currentTarget.getAttribute('aria-disabled') === 'true') {
+        event.preventDefault();
+        alert('Stripe test checkout must be configured before testing. No charge was attempted.');
+      }
+    });
+  </script>
 </body>
-</html> 
+</html>
