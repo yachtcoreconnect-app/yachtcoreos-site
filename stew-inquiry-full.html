@@ -56,9 +56,17 @@
         }
         #draftStatus { min-height: 1.25rem; color: #86efac; font-size: .78rem; }
 
+        .skip-link { position: fixed; left: 1rem; top: -5rem; z-index: 100; padding: .75rem 1rem; background: #fff; color: #0f172a; border: 3px solid #fbbf24; border-radius: .5rem; font-weight: 800; }
+        .skip-link:focus { top: 1rem; }
+        .language-bar { max-width: 56rem; margin: 1rem auto 0; padding: 0 1.5rem; display: flex; justify-content: flex-end; align-items: center; gap: .6rem; }
+        .language-bar label { color: #334155; font-weight: 800; font-size: .875rem; }
+        .language-bar select { min-height: 44px; padding: .55rem 2.2rem .55rem .8rem; border: 2px solid #475569; border-radius: .65rem; background: #fff; color: #0f172a; font-weight: 700; }
+        .language-bar select:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid #fbbf24; outline-offset: 3px; }
+        @media (max-width: 640px) { .language-bar { justify-content: stretch; } .language-bar select { flex: 1; } }
 </style>
 </head>
 <body>
+  <a class="skip-link" href="#inquiryForm">Skip to the inquiry form</a>
   <section class="access-overlay" id="accessOverlay">
     <form class="access-card" id="accessForm">
       <h2>Open your purchased Stew–Captain Form</h2>
@@ -70,7 +78,7 @@
     </form>
   </section>
   <div class="test-banner">TEST BRANCH · Canonical stewardess-to-captain form · Form answers stay on this device</div>
-  <div id="paidFormPage" hidden>
+  <main id="paidFormPage" role="main" hidden>
     <!-- Navbar -->
     <nav class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
         <div class="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
@@ -88,6 +96,16 @@
             </div>
         </div>
     </nav>
+    <div class="language-bar">
+        <label for="languageSelect">Language</label>
+        <select id="languageSelect" autocomplete="off">
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="it">Italiano</option>
+            <option value="ru">Русский</option>
+        </select>
+    </div>
 
     <!-- Header / Hero -->
     <div class="max-w-4xl mx-auto px-6 pt-10 pb-6 text-center">
@@ -102,7 +120,7 @@
     <div class="max-w-4xl mx-auto px-6 pb-20">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl">
             
-            <form id="inquiryForm" class="space-y-8" autocomplete="off">
+            <form id="inquiryForm" class="space-y-8" autocomplete="off" aria-describedby="privacyNotice">
                 
                 <!-- SECTION 1: Vessel Basics -->
                 <div>
@@ -216,7 +234,7 @@
 
             </form>
 
-            <div class="draft-notice">
+            <div class="draft-notice" id="privacyNotice">
                 <strong>Saved only on this device.</strong> Your draft is not sent to YachtCoreOS or Supabase. Avoid entering sensitive personal, financial, or medical information on a shared device.
                 <div class="draft-tools mt-3">
                     <button type="button" id="clearDraftButton" class="clear-draft">Clear saved draft</button>
@@ -226,16 +244,16 @@
 
             <!-- Output Action Area -->
             <div class="mt-8 pt-6 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
-                <div class="text-xs text-slate-400 text-center md:text-left">
+                <div id="copyInstruction" class="text-xs text-slate-400 text-center md:text-left">
                     <i class="fa-solid fa-circle-info text-rose-400 mr-1"></i> Tap below to generate a clean, formatted text response for the captain.
                 </div>
                 <button type="button" onclick="generateAndCopyAnswers()" class="w-full md:w-auto px-8 py-3.5 stew-accent hover:opacity-90 font-semibold rounded-2xl shadow-lg shadow-rose-900/30 flex items-center justify-center gap-x-2 transition-all">
-                    <i class="fa-regular fa-clipboard"></i> <span>Copy Formatted Answers</span>
+                    <i class="fa-regular fa-clipboard"></i> <span id="copyButtonText">Copy Formatted Answers</span>
                 </button>
             </div>
 
             <!-- Success Alert Banner -->
-            <div id="copyAlert" class="hidden mt-4 p-4 bg-emerald-950/60 border border-emerald-800/60 text-emerald-300 rounded-2xl text-center text-sm font-medium animate-pulse">
+            <div id="copyAlert" role="status" aria-live="polite" class="hidden mt-4 p-4 bg-emerald-950/60 border border-emerald-800/60 text-emerald-300 rounded-2xl text-center text-sm font-medium animate-pulse">
                 <i class="fa-solid fa-check-circle mr-2"></i> Copied to clipboard! Ready to paste back to your chat.
             </div>
 
@@ -249,6 +267,106 @@
 
     <!-- Script to Generate & Copy Structured Text -->
     <script>
+        const I18N = {
+          en: {
+            language:'Language', title:'Stew-Captain Quick Inquiry Form', intro:'Send this clean interior-focused form to captains inquiring about your stewardess services to lock down vessel details, pay, and rotation instantly.',
+            sections:['1. Vessel Overview','2. Program & Itinerary','3. Interior & Crew Details','4. Compensation & Terms'],
+            fields:{
+              vesselName:['Vessel Name','e.g. M/Y Sanctuary'],vesselSize:['Size / Type','e.g. 112 ft Mangusta / Composite'],vesselYear:['Year Built / Refit','e.g. 2021 / 2025 Refit'],vesselFlag:['Flag State','e.g. Cayman Islands (Red Ensign)'],
+              programType:['Program Structure',''],homePort:['Current Location / Home Port','e.g. Fort Lauderdale, FL'],cruisingGrounds:['Expected Cruising Grounds','e.g. Bahamas winter, New England summer'],
+              crewSize:['Total Crew Size','e.g. 8 crew total'],interiorDept:['Interior Department Structure','e.g. Chief Stew + 2nd Stew'],roleSplit:['Intended Role & Split (Stew Specific)','e.g. Sole Stew / Service & Housekeeping split'],
+              offeredPay:['Offered Pay, Currency & Period','e.g. $5,500 USD / month'],rotation:['Rotation / Leave Package','e.g. 2:2 rotation or 38 days leave / year'],contractType:['Contract Type','e.g. Seasonal / Permanent'],benefits:['Flights & Medical Included?','e.g. Annual flights + medical included'],startDate:['Expected Start Date','e.g. Immediate / Sept 1'],guestNotes:['Guest / Owner Frequency','e.g. Moderate owner use, 4 charter weeks'],extraNotes:['Extra Interior Notes / Requirements','e.g. Service style, uniform and experience requirements']
+            },
+            options:['Private / Charter Hybrid','Strictly Private','Busy Charter Program'], privacy:'Saved only on this device. Your draft is not sent to YachtCoreOS or Supabase. Avoid sensitive information on a shared device.', clear:'Clear saved draft', copy:'Copy Formatted Answers', instruction:'Tap below to generate a clean, formatted text response for the captain.',
+            output:['STEWARDESS POSITION INQUIRY DETAILS','VESSEL OVERVIEW','PROGRAM & ITINERARY','INTERIOR & CREW','PACKAGE & TERMS','EXTRA NOTES','Not specified']
+          },
+          es: {
+            language:'Idioma', title:'Formulario rápido de consulta Stew–Capitán', intro:'Envíe este formulario al capitán para confirmar los detalles del yate, el puesto, la remuneración y la rotación.',
+            sections:['1. Descripción del yate','2. Programa e itinerario','3. Interior y tripulación','4. Remuneración y condiciones'],
+            fields:{
+              vesselName:['Nombre del yate','p. ej., M/Y Sanctuary'],vesselSize:['Eslora / Tipo','p. ej., Mangusta de 112 pies / Composite'],vesselYear:['Año / Refit','p. ej., 2021 / Refit 2025'],vesselFlag:['Bandera','p. ej., Islas Caimán'],
+              programType:['Tipo de programa',''],homePort:['Ubicación / Puerto base','p. ej., Fort Lauderdale, FL'],cruisingGrounds:['Zona de navegación prevista','p. ej., Bahamas en invierno'],
+              crewSize:['Número total de tripulantes','p. ej., 8 tripulantes'],interiorDept:['Estructura del departamento interior','p. ej., Chief Stew + 2nd Stew'],roleSplit:['Puesto y distribución de funciones','p. ej., Sole Stew / servicio y housekeeping'],
+              offeredPay:['Salario, moneda y período','p. ej., 5.500 USD / mes'],rotation:['Rotación / Vacaciones','p. ej., rotación 2:2'],contractType:['Tipo de contrato','p. ej., estacional / permanente'],benefits:['¿Vuelos y seguro médico incluidos?','p. ej., vuelos anuales + seguro médico'],startDate:['Fecha prevista de inicio','p. ej., inmediata / 1 de septiembre'],guestNotes:['Frecuencia de propietarios / invitados','p. ej., uso moderado, 4 semanas de charter'],extraNotes:['Notas / Requisitos adicionales','p. ej., estilo de servicio, uniforme y experiencia']
+            },
+            options:['Privado / Charter','Solo privado','Programa intensivo de charter'], privacy:'Guardado únicamente en este dispositivo. El borrador no se envía a YachtCoreOS ni a Supabase. Evite información sensible en dispositivos compartidos.', clear:'Borrar borrador guardado', copy:'Copiar respuestas formateadas', instruction:'Pulse para generar una respuesta clara y formateada para el capitán.',
+            output:['DETALLES DE LA CONSULTA PARA EL PUESTO DE STEWARDESS','DESCRIPCIÓN DEL YATE','PROGRAMA E ITINERARIO','INTERIOR Y TRIPULACIÓN','REMUNERACIÓN Y CONDICIONES','NOTAS ADICIONALES','No especificado']
+          },
+          fr: {
+            language:'Langue', title:'Formulaire rapide Stew–Capitaine', intro:'Envoyez ce formulaire au capitaine afin de confirmer les détails du yacht, du poste, de la rémunération et de la rotation.',
+            sections:['1. Présentation du yacht','2. Programme et itinéraire','3. Intérieur et équipage','4. Rémunération et conditions'],
+            fields:{
+              vesselName:['Nom du yacht','ex. M/Y Sanctuary'],vesselSize:['Taille / Type','ex. Mangusta 112 pieds / Composite'],vesselYear:['Année / Refit','ex. 2021 / Refit 2025'],vesselFlag:['Pavillon','ex. Îles Caïmans'],
+              programType:['Type de programme',''],homePort:['Position / Port d’attache','ex. Fort Lauderdale, FL'],cruisingGrounds:['Zones de navigation prévues','ex. Bahamas en hiver'],
+              crewSize:['Effectif total','ex. 8 membres'],interiorDept:['Structure de l’équipe intérieure','ex. Chief Stew + 2nd Stew'],roleSplit:['Poste et répartition des tâches','ex. Sole Stew / service et housekeeping'],
+              offeredPay:['Salaire, devise et période','ex. 5 500 USD / mois'],rotation:['Rotation / Congés','ex. rotation 2:2'],contractType:['Type de contrat','ex. saisonnier / permanent'],benefits:['Vols et couverture médicale inclus ?','ex. vols annuels + couverture médicale'],startDate:['Date de début prévue','ex. immédiate / 1er septembre'],guestNotes:['Fréquence propriétaires / invités','ex. usage modéré, 4 semaines de charter'],extraNotes:['Notes / Exigences supplémentaires','ex. style de service, uniforme et expérience']
+            },
+            options:['Privé / Charter','Strictement privé','Programme charter intensif'], privacy:'Enregistré uniquement sur cet appareil. Le brouillon n’est envoyé ni à YachtCoreOS ni à Supabase. Évitez les informations sensibles sur un appareil partagé.', clear:'Effacer le brouillon', copy:'Copier les réponses formatées', instruction:'Appuyez pour générer une réponse claire et formatée pour le capitaine.',
+            output:['DÉTAILS DE LA DEMANDE POUR LE POSTE DE STEWARDESS','PRÉSENTATION DU YACHT','PROGRAMME ET ITINÉRAIRE','INTÉRIEUR ET ÉQUIPAGE','RÉMUNÉRATION ET CONDITIONS','NOTES SUPPLÉMENTAIRES','Non précisé']
+          },
+          it: {
+            language:'Lingua', title:'Modulo rapido Stew–Comandante', intro:'Invia questo modulo al comandante per confermare i dettagli dello yacht, del ruolo, della retribuzione e della rotazione.',
+            sections:['1. Panoramica dello yacht','2. Programma e itinerario','3. Interni ed equipaggio','4. Retribuzione e condizioni'],
+            fields:{
+              vesselName:['Nome dello yacht','es. M/Y Sanctuary'],vesselSize:['Lunghezza / Tipo','es. Mangusta 112 piedi / Composite'],vesselYear:['Anno / Refit','es. 2021 / Refit 2025'],vesselFlag:['Bandiera','es. Isole Cayman'],
+              programType:['Tipo di programma',''],homePort:['Posizione / Porto base','es. Fort Lauderdale, FL'],cruisingGrounds:['Aree di navigazione previste','es. Bahamas in inverno'],
+              crewSize:['Numero totale equipaggio','es. 8 membri'],interiorDept:['Struttura del reparto interni','es. Chief Stew + 2nd Stew'],roleSplit:['Ruolo e divisione dei compiti','es. Sole Stew / servizio e housekeeping'],
+              offeredPay:['Retribuzione, valuta e periodo','es. 5.500 USD / mese'],rotation:['Rotazione / Ferie','es. rotazione 2:2'],contractType:['Tipo di contratto','es. stagionale / permanente'],benefits:['Voli e copertura medica inclusi?','es. voli annuali + copertura medica'],startDate:['Data di inizio prevista','es. immediata / 1 settembre'],guestNotes:['Frequenza proprietari / ospiti','es. uso moderato, 4 settimane charter'],extraNotes:['Note / Requisiti aggiuntivi','es. stile di servizio, uniforme ed esperienza']
+            },
+            options:['Privato / Charter','Solo privato','Programma charter intenso'], privacy:'Salvato soltanto su questo dispositivo. La bozza non viene inviata a YachtCoreOS o Supabase. Evita dati sensibili sui dispositivi condivisi.', clear:'Cancella bozza salvata', copy:'Copia risposte formattate', instruction:'Tocca per generare una risposta chiara e formattata per il comandante.',
+            output:['DETTAGLI DELLA RICHIESTA PER LA POSIZIONE DI STEWARDESS','PANORAMICA DELLO YACHT','PROGRAMMA E ITINERARIO','INTERNI ED EQUIPAGGIO','RETRIBUZIONE E CONDIZIONI','NOTE AGGIUNTIVE','Non specificato']
+          },
+          ru: {
+            language:'Язык', title:'Краткая анкета Stew–Капитан', intro:'Отправьте эту анкету капитану, чтобы уточнить данные яхты, обязанности, оплату и график.',
+            sections:['1. Данные яхты','2. Программа и маршрут','3. Интерьерная команда','4. Оплата и условия'],
+            fields:{
+              vesselName:['Название яхты','например, M/Y Sanctuary'],vesselSize:['Длина / Тип','например, Mangusta 112 футов / Composite'],vesselYear:['Год / Рефит','например, 2021 / рефит 2025'],vesselFlag:['Флаг','например, Каймановы острова'],
+              programType:['Тип программы',''],homePort:['Местоположение / Порт приписки','например, Fort Lauderdale, FL'],cruisingGrounds:['Планируемый район плавания','например, Багамы зимой'],
+              crewSize:['Общее число экипажа','например, 8 человек'],interiorDept:['Состав интерьерной команды','например, Chief Stew + 2nd Stew'],roleSplit:['Должность и обязанности','например, Sole Stew / сервис и housekeeping'],
+              offeredPay:['Оплата, валюта и период','например, 5 500 USD / месяц'],rotation:['Ротация / Отпуск','например, ротация 2:2'],contractType:['Тип контракта','например, сезонный / постоянный'],benefits:['Перелёты и медстраховка включены?','например, ежегодные перелёты + медстраховка'],startDate:['Предполагаемая дата начала','например, сразу / 1 сентября'],guestNotes:['Частота пребывания владельца / гостей','например, умеренное использование, 4 недели чартера'],extraNotes:['Дополнительные требования','например, стиль сервиса, форма и опыт']
+            },
+            options:['Частная / Чартер','Только частная','Активная чартерная программа'], privacy:'Черновик хранится только на этом устройстве и не отправляется в YachtCoreOS или Supabase. Не вводите конфиденциальные данные на общем устройстве.', clear:'Удалить сохранённый черновик', copy:'Копировать ответы', instruction:'Нажмите, чтобы создать аккуратно оформленный ответ для капитана.',
+            output:['ДАННЫЕ ПО ВАКАНСИИ СТЮАРДЕССЫ','ДАННЫЕ ЯХТЫ','ПРОГРАММА И МАРШРУТ','ИНТЕРЬЕР И ЭКИПАЖ','ОПЛАТА И УСЛОВИЯ','ДОПОЛНИТЕЛЬНЫЕ ЗАМЕТКИ','Не указано']
+          }
+        };
+        let activeLanguage = localStorage.getItem('yachtcoreos.stew-captain.language') || 'en';
+
+        function bindAccessibleLabels() {
+            document.querySelectorAll('#inquiryForm input, #inquiryForm select, #inquiryForm textarea').forEach(control => {
+                const label = control.closest('div')?.querySelector('label');
+                if (label && control.id) label.htmlFor = control.id;
+            });
+        }
+
+        function applyLanguage(code) {
+            const t = I18N[code] || I18N.en;
+            activeLanguage = code;
+            document.documentElement.lang = code;
+            localStorage.setItem('yachtcoreos.stew-captain.language', code);
+            document.querySelector('.language-bar label').textContent = t.language;
+            document.querySelector('.heading-serif').textContent = t.title;
+            document.querySelector('.heading-serif + p').textContent = t.intro;
+            document.querySelectorAll('#inquiryForm h3').forEach((heading, index) => {
+              const icon = heading.querySelector('i');
+              heading.textContent = '';
+              if (icon) heading.append(icon, document.createTextNode(' ' + t.sections[index]));
+            });
+            Object.entries(t.fields).forEach(([id, values]) => {
+              const control = document.getElementById(id);
+              if (!control) return;
+              const label = control.closest('div')?.querySelector('label');
+              if (label) label.textContent = values[0];
+              if (values[1]) control.placeholder = values[1];
+            });
+            const program = document.getElementById('programType');
+            Array.from(program.options).forEach((option,index) => { option.textContent = t.options[index]; });
+            document.getElementById('privacyNotice').childNodes[1].textContent = t.privacy + ' ';
+            document.getElementById('clearDraftButton').textContent = t.clear;
+            document.getElementById('copyButtonText').textContent = t.copy;
+            document.getElementById('copyInstruction').lastChild.textContent = ' ' + t.instruction;
+            bindAccessibleLabels();
+        }
+
         const DRAFT_STORAGE_KEY = 'yachtcoreos.stew-captain-form.draft.v1';
 
         function getDraftControls() {
@@ -293,6 +411,11 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            bindAccessibleLabels();
+            const languageSelect = document.getElementById('languageSelect');
+            languageSelect.value = I18N[activeLanguage] ? activeLanguage : 'en';
+            languageSelect.addEventListener('change', event => applyLanguage(event.target.value));
+            applyLanguage(languageSelect.value);
             restoreDraft();
             const form = document.getElementById('inquiryForm');
             form.addEventListener('input', saveDraft);
@@ -301,28 +424,29 @@
         });
 
         function generateAndCopyAnswers() {
-            const getVal = (id) => document.getElementById(id).value.trim() || 'Not specified';
+            const t = I18N[activeLanguage] || I18N.en;
+            const getVal = (id) => document.getElementById(id).value.trim() || t.output[6];
 
             const outputText = 
-`⚓ *STEWARDESS POSITION INQUIRY DETAILS* ⚓
+`⚓ *${t.output[0]}* ⚓
 
-*1. VESSEL OVERVIEW*
+*1. ${t.output[1]}*
 • Vessel Name: ${getVal('vesselName')}
 • Size / Type: ${getVal('vesselSize')}
 • Year / Refit: ${getVal('vesselYear')}
 • Flag: ${getVal('vesselFlag')}
 
-*2. PROGRAM & ITINERARY*
+*2. ${t.output[2]}*
 • Program: ${getVal('programType')}
 • Home Port: ${getVal('homePort')}
 • Cruising Grounds: ${getVal('cruisingGrounds')}
 
-*3. INTERIOR & CREW*
+*3. ${t.output[3]}*
 • Total Crew: ${getVal('crewSize')}
 • Interior Team: ${getVal('interiorDept')}
 • Role Split: ${getVal('roleSplit')}
 
-*4. PACKAGE & TERMS*
+*4. ${t.output[4]}*
 • Offered Pay: ${getVal('offeredPay')}
 • Rotation: ${getVal('rotation')}
 • Contract Type: ${getVal('contractType')}
@@ -330,7 +454,7 @@
 • Start Date: ${getVal('startDate')}
 • Guest Schedule: ${getVal('guestNotes')}
 
-*5. EXTRA NOTES*
+*5. ${t.output[5]}*
 • ${getVal('extraNotes')}
 
 ---
@@ -347,7 +471,7 @@
             });
         }
     </script>
-</div>
+</main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 'use strict';
