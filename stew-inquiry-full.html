@@ -63,6 +63,15 @@
         .language-bar select { min-height: 44px; padding: .55rem 2.2rem .55rem .8rem; border: 2px solid #475569; border-radius: .65rem; background: #fff; color: #0f172a; font-weight: 700; }
         .language-bar select:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid #fbbf24; outline-offset: 3px; }
         @media (max-width: 640px) { .language-bar { justify-content: stretch; } .language-bar select { flex: 1; } }
+        .legal-safety { margin-top: 1.25rem; padding: 1rem; border: 2px solid #fbbf24; border-radius: 1rem; background: #2a210d; color: #f8fafc; }
+        .legal-safety h4 { margin: 0 0 .55rem; font-size: 1rem; }
+        .legal-safety p, .legal-safety li { color: #e2e8f0; font-size: .82rem; line-height: 1.5; }
+        .legal-safety a, .support-links a { color: #5eead4; text-decoration: underline; text-underline-offset: 3px; }
+        .terms-acceptance { display: flex; gap: .7rem; align-items: flex-start; margin-top: .9rem; }
+        .terms-acceptance input { width: 1.25rem; height: 1.25rem; margin-top: .15rem; flex: 0 0 auto; }
+        .terms-acceptance label { color: #f8fafc; font-weight: 750; font-size: .86rem; }
+        #copyButton:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
+        .support-links { margin-top: 1rem; text-align: center; color: #475569; font-size: .82rem; line-height: 1.7; }
 </style>
 </head>
 <body>
@@ -242,12 +251,23 @@
                 </div>
             </div>
 
+            <section class="legal-safety" aria-labelledby="legalSafetyTitle">
+                <h4 id="legalSafetyTitle"><i class="fa-solid fa-scale-balanced" aria-hidden="true"></i> Important pilot notice</h4>
+                <p>This is an organizational communication tool—not an employment agreement and not legal, maritime-compliance, medical, tax, or financial advice. YachtCoreOS does not verify user-entered information or make employment decisions. Captains, employers, vessels, and candidates must independently review all terms and execute any legally required seafarer employment agreement.</p>
+                <p><a href="pilot-legal-policies.html" target="_blank" rel="noopener">Read the Pilot Legal &amp; Policies page</a> <strong>(draft pending attorney review)</strong>.</p>
+                <div class="terms-acceptance">
+                    <input type="checkbox" id="acceptPilotTerms">
+                    <label for="acceptPilotTerms">I have read the pilot notice, will verify the information independently, and accept Pilot Terms version 2026-08-15.</label>
+                </div>
+                <p id="termsStatus" role="status" aria-live="polite"></p>
+            </section>
+
             <!-- Output Action Area -->
             <div class="mt-8 pt-6 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
                 <div id="copyInstruction" class="text-xs text-slate-400 text-center md:text-left">
                     <i class="fa-solid fa-circle-info text-rose-400 mr-1"></i> Tap below to generate a clean, formatted text response for the captain.
                 </div>
-                <button type="button" onclick="generateAndCopyAnswers()" class="w-full md:w-auto px-8 py-3.5 stew-accent hover:opacity-90 font-semibold rounded-2xl shadow-lg shadow-rose-900/30 flex items-center justify-center gap-x-2 transition-all">
+                <button type="button" id="copyButton" onclick="generateAndCopyAnswers()" disabled aria-describedby="termsStatus" class="w-full md:w-auto px-8 py-3.5 stew-accent hover:opacity-90 font-semibold rounded-2xl shadow-lg shadow-rose-900/30 flex items-center justify-center gap-x-2 transition-all">
                     <i class="fa-regular fa-clipboard"></i> <span id="copyButtonText">Copy Formatted Answers</span>
                 </button>
             </div>
@@ -263,6 +283,14 @@
     <!-- Footer -->
     <footer class="text-center pb-12 text-xs text-slate-600">
         YachtCoreOS • Built for Elite Interior Professionals
+        <div class="support-links">
+            <a href="mailto:yachtcoreconnect@yachtcoreos.com?subject=YachtCoreOS%20Stew-Captain%20Support">Contact support</a>
+            ·
+            <a href="mailto:yachtcoreconnect@yachtcoreos.com?subject=Report%20YachtCoreOS%20Issue&body=Page%3A%20Stew-Captain%20Form%0ADevice%20and%20browser%3A%20%0ATime%3A%20%0AIssue%3A%20%0A%0ADo%20not%20include%20passwords%2C%20card%20details%2C%20passport%20data%2C%20or%20medical%20records.">Report an issue</a>
+            ·
+            <a href="pilot-legal-policies.html">Legal &amp; policies</a>
+            <div>Do not email passwords, card details, passport data, or medical records.</div>
+        </div>
     </footer>
 
     <!-- Script to Generate & Copy Structured Text -->
@@ -368,6 +396,35 @@
             bindAccessibleLabels();
         }
 
+        const PILOT_TERMS_VERSION = '2026-08-15';
+        const PILOT_TERMS_KEY = 'yachtcoreos.stew-captain.terms';
+
+        function restoreTermsAcceptance() {
+            const checkbox = document.getElementById('acceptPilotTerms');
+            const copyButton = document.getElementById('copyButton');
+            try {
+                const record = JSON.parse(localStorage.getItem(PILOT_TERMS_KEY) || 'null');
+                checkbox.checked = record?.version === PILOT_TERMS_VERSION;
+            } catch (_error) {
+                localStorage.removeItem(PILOT_TERMS_KEY);
+            }
+            copyButton.disabled = !checkbox.checked;
+        }
+
+        function updateTermsAcceptance(event) {
+            const accepted = event.target.checked;
+            const copyButton = document.getElementById('copyButton');
+            const status = document.getElementById('termsStatus');
+            copyButton.disabled = !accepted;
+            if (accepted) {
+                localStorage.setItem(PILOT_TERMS_KEY, JSON.stringify({version:PILOT_TERMS_VERSION, acceptedAt:new Date().toISOString()}));
+                status.textContent = 'Pilot terms accepted on this device.';
+            } else {
+                localStorage.removeItem(PILOT_TERMS_KEY);
+                status.textContent = 'Accept the pilot notice to enable copying.';
+            }
+        }
+
         const DRAFT_STORAGE_KEY = 'yachtcoreos.stew-captain-form.draft.v1';
 
         function getDraftControls() {
@@ -422,9 +479,16 @@
             form.addEventListener('input', saveDraft);
             form.addEventListener('change', saveDraft);
             document.getElementById('clearDraftButton').addEventListener('click', clearDraft);
+            restoreTermsAcceptance();
+            document.getElementById('acceptPilotTerms').addEventListener('change', updateTermsAcceptance);
         });
 
         function generateAndCopyAnswers() {
+            if (!document.getElementById('acceptPilotTerms').checked) {
+                document.getElementById('termsStatus').textContent = 'Accept the pilot notice before copying.';
+                document.getElementById('acceptPilotTerms').focus();
+                return;
+            }
             const t = I18N[activeLanguage] || I18N.en;
             const getVal = (id) => document.getElementById(id).value.trim() || t.output[6];
 
