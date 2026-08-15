@@ -9,6 +9,14 @@
     * { box-sizing:border-box; }
     body { margin:0; min-height:100vh; font-family:Inter,Arial,sans-serif; background:linear-gradient(180deg,#06111c,#0b2233); color:var(--text); }
     .test-banner { padding:10px 16px; text-align:center; background:#7d4d00; font-weight:800; }
+    .access-overlay { position:fixed; inset:0; z-index:50; display:grid; place-items:center; padding:20px; background:rgba(3,10,16,.96); }
+    .access-overlay[hidden] { display:none; }
+    .access-card { width:min(460px,100%); padding:24px; background:var(--panel); border:1px solid var(--line); border-radius:18px; }
+    .access-card p { color:var(--muted); line-height:1.5; }
+    .access-message { min-height:20px; margin-top:12px; color:var(--muted); font-size:13px; }
+    .access-message.error { color:var(--danger); }
+    .access-message.success { color:var(--aqua); }
+    .page[hidden] { display:none; }
     .page { width:min(900px,100%); margin:auto; padding:26px 18px 60px; }
     .brand { color:var(--aqua); font-size:13px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
     h1 { margin:8px 0 4px; font-size:clamp(28px,6vw,44px); }
@@ -32,8 +40,22 @@
   </style>
 </head>
 <body>
+  <section class="access-overlay" id="accessOverlay">
+    <form class="access-card" id="accessForm">
+      <div class="brand">YachtCoreOS</div>
+      <h2>Open your purchased form</h2>
+      <p>Enter the same email used at checkout. We will email a secure sign-in link, then verify your active purchase.</p>
+      <label for="accessEmail">Purchase email</label>
+      <input id="accessEmail" type="email" autocomplete="email" required>
+      <div class="actions">
+        <button class="primary" id="magicLinkButton" type="submit">Email Secure Access Link</button>
+        <button id="signOutButton" type="button" hidden>Sign Out</button>
+      </div>
+      <div class="access-message" id="accessMessage" aria-live="polite"></div>
+    </form>
+  </section>
   <div class="test-banner">TEST BRANCH · Local processing only · No form information is transmitted</div>
-  <main class="page">
+  <main class="page" id="paidFormPage" hidden>
     <div class="brand">YachtCoreOS</div>
     <h1>Stew–Captain Hiring Inquiry</h1>
     <p class="lead">Complete the hiring details once. YachtCoreOS generates a structured “Looking for Crew” brief ready to copy or download.</p>
@@ -74,8 +96,93 @@
       <div class="actions"><button class="primary" id="copyBrief" type="button">Copy Brief</button><button id="downloadBrief" type="button">Download .txt</button></div>
     </section>
   </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     'use strict';
+    const SUPABASE_URL = "https://tfzbdevnhzzbbhtsarid.supabase.co";
+    const SUPABASE_PUBLIC_KEY = "sb_publishable_56xqPAuxCFUe7edhDUzUaQ_7aZQtOUI";
+    const ACCESS_ENDPOINT = SUPABASE_URL + "/functions/v1/check-stew-captain-access";
+    const accessOverlay = document.getElementById('accessOverlay');
+    const accessForm = document.getElementById('accessForm');
+    const accessEmail = document.getElementById('accessEmail');
+    const accessMessage = document.getElementById('accessMessage');
+    const magicLinkButton = document.getElementById('magicLinkButton');
+    const signOutButton = document.getElementById('signOutButton');
+    const paidFormPage = document.getElementById('paidFormPage');
+    let authClient = null;
+
+    function setAccessMessage(message, type = '') {
+      accessMessage.textContent = message;
+      accessMessage.className = 'access-message' + (type ? ' ' + type : '');
+    }
+
+    async function verifyEntitlement(session) {
+      paidFormPage.hidden = true;
+      accessOverlay.hidden = false;
+      signOutButton.hidden = !session;
+      if (!session) {
+        setAccessMessage('Enter your purchase email to receive a secure access link.');
+        return;
+      }
+
+      setAccessMessage('Verifying your purchase…');
+      const response = await fetch(ACCESS_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          apikey: SUPABASE_PUBLIC_KEY,
+          authorization: 'Bearer ' + session.access_token,
+          'content-type': 'application/json'
+        },
+        body: '{}'
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || result.allowed !== true) {
+        setAccessMessage('No active Stew–Captain Form purchase was found for this signed-in email.', 'error');
+        return;
+      }
+
+      accessOverlay.hidden = true;
+      paidFormPage.hidden = false;
+      setAccessMessage('Purchase verified.', 'success');
+    }
+
+    async function initializeAccess() {
+      if (!window.supabase?.createClient) {
+        setAccessMessage('Secure sign-in could not load. Refresh and try again.', 'error');
+        return;
+      }
+      authClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY, {
+        auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+      });
+      const { data } = await authClient.auth.getSession();
+      await verifyEntitlement(data?.session ?? null);
+      authClient.auth.onAuthStateChange((_event, session) => {
+        setTimeout(() => verifyEntitlement(session), 0);
+      });
+    }
+
+    accessForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (!authClient) return;
+      const email = accessEmail.value.trim();
+      if (!email) return;
+      magicLinkButton.disabled = true;
+      setAccessMessage('Sending secure access link…');
+      const { error } = await authClient.auth.signInWithOtp({
+        email,
+        options: { emailRedirectTo: window.location.origin + window.location.pathname }
+      });
+      magicLinkButton.disabled = false;
+      setAccessMessage(
+        error ? error.message : 'Check your email and open the secure sign-in link on this device.',
+        error ? 'error' : 'success'
+      );
+    });
+
+    signOutButton.addEventListener('click', async () => {
+      if (authClient) await authClient.auth.signOut();
+    });
+
     const form = document.getElementById('hiringForm');
     const status = document.getElementById('status');
     const output = document.getElementById('outputSection');
@@ -111,6 +218,7 @@
     document.getElementById('copyBrief').addEventListener('click', async () => { try { await navigator.clipboard.writeText(brief.textContent); status.textContent = 'Crew brief copied.'; } catch { status.textContent = 'Copy was blocked. Select the brief manually.'; } });
     document.getElementById('downloadBrief').addEventListener('click', () => { const blob = new Blob([brief.textContent],{type:'text/plain'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='YachtCoreOS-Crew-Brief.txt'; a.click(); URL.revokeObjectURL(url); status.textContent='Crew brief downloaded.'; });
     loadDraft();
+    initializeAccess();
   </script>
 </body>
 </html>
