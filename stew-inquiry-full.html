@@ -235,7 +235,7 @@
             </form>
 
             <div class="draft-notice" id="privacyNotice">
-                <strong>Saved only on this device.</strong> Your draft is not sent to YachtCoreOS or Supabase. Avoid entering sensitive personal, financial, or medical information on a shared device.
+                <strong id="privacyHeading">Saved only on this device.</strong> <span id="privacyText">Your draft is not sent to YachtCoreOS or Supabase. Avoid entering sensitive personal, financial, or medical information on a shared device.</span>
                 <div class="draft-tools mt-3">
                     <button type="button" id="clearDraftButton" class="clear-draft">Clear saved draft</button>
                     <span id="draftStatus" role="status" aria-live="polite"></span>
@@ -360,7 +360,8 @@
             });
             const program = document.getElementById('programType');
             Array.from(program.options).forEach((option,index) => { option.textContent = t.options[index]; });
-            document.getElementById('privacyNotice').childNodes[1].textContent = t.privacy + ' ';
+            document.getElementById('privacyHeading').textContent = t.privacy.split('.')[0] + '.';
+            document.getElementById('privacyText').textContent = t.privacy.split('.').slice(1).join('.').trim();
             document.getElementById('clearDraftButton').textContent = t.clear;
             document.getElementById('copyButtonText').textContent = t.copy;
             document.getElementById('copyInstruction').lastChild.textContent = ' ' + t.instruction;
@@ -431,28 +432,28 @@
 `⚓ *${t.output[0]}* ⚓
 
 *1. ${t.output[1]}*
-• Vessel Name: ${getVal('vesselName')}
-• Size / Type: ${getVal('vesselSize')}
-• Year / Refit: ${getVal('vesselYear')}
-• Flag: ${getVal('vesselFlag')}
+• ${t.fields.vesselName[0]}: ${getVal('vesselName')}
+• ${t.fields.vesselSize[0]}: ${getVal('vesselSize')}
+• ${t.fields.vesselYear[0]}: ${getVal('vesselYear')}
+• ${t.fields.vesselFlag[0]}: ${getVal('vesselFlag')}
 
 *2. ${t.output[2]}*
-• Program: ${getVal('programType')}
-• Home Port: ${getVal('homePort')}
-• Cruising Grounds: ${getVal('cruisingGrounds')}
+• ${t.fields.programType[0]}: ${getVal('programType')}
+• ${t.fields.homePort[0]}: ${getVal('homePort')}
+• ${t.fields.cruisingGrounds[0]}: ${getVal('cruisingGrounds')}
 
 *3. ${t.output[3]}*
-• Total Crew: ${getVal('crewSize')}
-• Interior Team: ${getVal('interiorDept')}
-• Role Split: ${getVal('roleSplit')}
+• ${t.fields.crewSize[0]}: ${getVal('crewSize')}
+• ${t.fields.interiorDept[0]}: ${getVal('interiorDept')}
+• ${t.fields.roleSplit[0]}: ${getVal('roleSplit')}
 
 *4. ${t.output[4]}*
-• Offered Pay: ${getVal('offeredPay')}
-• Rotation: ${getVal('rotation')}
-• Contract Type: ${getVal('contractType')}
-• Flights / Medical: ${getVal('benefits')}
-• Start Date: ${getVal('startDate')}
-• Guest Schedule: ${getVal('guestNotes')}
+• ${t.fields.offeredPay[0]}: ${getVal('offeredPay')}
+• ${t.fields.rotation[0]}: ${getVal('rotation')}
+• ${t.fields.contractType[0]}: ${getVal('contractType')}
+• ${t.fields.benefits[0]}: ${getVal('benefits')}
+• ${t.fields.startDate[0]}: ${getVal('startDate')}
+• ${t.fields.guestNotes[0]}: ${getVal('guestNotes')}
 
 *5. ${t.output[5]}*
 • ${getVal('extraNotes')}
