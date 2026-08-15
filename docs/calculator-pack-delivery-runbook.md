@@ -19,6 +19,8 @@ Use this process only for Stripe Sandbox testing until a production fulfillment 
 4. Confirm the line item is Yacht Crew Work & Cost Calculator Pack.
 5. Do not fulfill from the success-page screenshot alone.
 
+The test Payment Link currently uses Stripe's hosted confirmation. Do not configure a temporary Vercel share URL as the redirect target because that URL expires.
+
 ## Deliver manually
 
 1. Create a new email from `yachtcoreconnect@yachtcoreos.com` to the email recorded by Stripe.
