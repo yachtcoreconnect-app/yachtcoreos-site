@@ -3,268 +3,554 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YachtCoreOS | Certified Stew Inquiry</title>
+    <title>YachtCoreOS • Stew–Captain Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root {
-            --primary: #0f172a;
-            --accent: #0284c7;
-            --bg: #f1f5f9;
-            --card-bg: #ffffff;
-            --text: #334155;
-            --border: #cbd5e1;
-            --active-bg: #e0f2fe;
-            --active-border: #0284c7;
-        }<script defer src="/_vercel/insights/script.js"></script>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .heading-serif { font-family: 'Playfair Display', Georgia, serif; }
+        .stew-accent { background: linear-gradient(135deg, #f43f5e 0%, #fb7185 100%); }
+        .stew-text { color: #fb7185; }
+    
+    .test-banner{padding:10px 16px;text-align:center;background:#7d4d00;color:#fff;font-weight:800}.access-overlay{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:20px;background:rgba(3,10,16,.96)}.access-overlay[hidden],#paidFormPage[hidden]{display:none}.access-card{width:min(460px,100%);padding:24px;background:#102638;border:1px solid rgba(255,255,255,.14);border-radius:18px;color:#eef7ff}.access-card p{color:#a9bece;line-height:1.5}.access-card label{display:block;margin:12px 0 7px}.access-card input{width:100%;padding:12px;border:1px solid #45667b;border-radius:10px;background:#081b29;color:#eef7ff}.access-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.access-actions button{padding:12px 16px;border:0;border-radius:10px;background:#39d1bb;color:#04241f;font-weight:900}.access-message{min-height:20px;margin-top:12px;color:#a9bece;font-size:13px}.access-message.error{color:#ff7777}.access-message.success{color:#39d1bb}
+        body { background: #f8fafc; color: #0f172a; }
+        nav .font-bold, nav .text-xs { color: #f8fafc; }
+        #inquiryForm input,
+        #inquiryForm select,
+        #inquiryForm textarea {
+            color: #f8fafc;
+            caret-color: #fb7185;
         }
-        .container {
-            width: 100%;
-            max-width: 860px;
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        #inquiryForm input::placeholder,
+        #inquiryForm textarea::placeholder { color: #94a3b8; opacity: 1; }
+        #inquiryForm label { color: #cbd5e1; }
+        #inquiryForm input:focus,
+        #inquiryForm select:focus,
+        #inquiryForm textarea:focus {
+            border-color: #fb7185;
+            box-shadow: 0 0 0 3px rgba(251, 113, 133, .22);
         }
-        h2 {
-            color: var(--primary);
-            margin-top: 0;
-            font-size: 20px;
-            text-align: center;
-            margin-bottom: 4px;
+        .draft-notice {
+            margin-top: 1.25rem;
+            padding: 1rem;
+            border: 1px solid #475569;
+            border-radius: 1rem;
+            background: #172033;
+            color: #cbd5e1;
+            font-size: .82rem;
+            line-height: 1.5;
         }
-        .subtitle {
-            text-align: center;
-            font-size: 12px;
-            color: #64748b;
-            margin-bottom: 16px;
-        }
-        .grid-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-        @media (max-width: 768px) {
-            .grid-row {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        @media (max-width: 480px) {
-            .grid-row {
-                grid-template-columns: 1fr;
-            }
-        }
-        .field-box {
-            background: #f8fafc;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 8px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .field-box input[type="text"], .field-box input[type="date"] {
-            border: none;
+        .draft-notice strong { color: #f8fafc; }
+        .draft-tools { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
+        .clear-draft {
+            padding: .75rem 1rem;
+            border: 1px solid #64748b;
+            border-radius: .75rem;
             background: transparent;
-            font-size: 13px;
-            color: var(--text);
-            outline: none;
-            width: 100%;
-            padding: 2px 0;
+            color: #f8fafc;
+            font-weight: 700;
         }
-        .field-box input::placeholder {
-            color: #94a3b8;
-            font-weight: 500;
+        .clear-draft:focus-visible {
+            outline: 3px solid #fbbf24;
+            outline-offset: 3px;
         }
-        .pill-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            margin-top: 6px;
-        }
-        .pill {
-            font-size: 11px;
-            padding: 3px 8px;
-            background: #ffffff;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.15s ease;
-        }
-        .pill:hover {
-            border-color: var(--accent);
-        }
-        .pill.selected {
-            background: var(--active-bg);
-            border-color: var(--active-border);
-            color: var(--accent);
-            font-weight: 600;
-        }
-        .other-input {
-            display: none;
-            margin-top: 6px;
-            width: 100%;
-            padding: 4px 6px;
-            font-size: 11px;
-            border: 1px solid var(--accent);
-            border-radius: 4px;
-            outline: none;
-            box-sizing: border-box;
-        }
-        .action-group {
-            display: flex;
-            gap: 8px;
-            margin-top: 14px;
-        }
-        button.action-btn {
-            flex: 1;
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            padding: 12px;
-            font-size: 13px;
-            font-weight: 600;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        button.action-btn:hover {
-            background-color: #0369a1;
-        }
-        button.secondary-btn {
-            background-color: #475569;
-        }
-        button.secondary-btn:hover {
-            background-color: #334155;
-        }
-        #locked-screen {
-            display: none;
-            text-align: center;
-            background: #ffeeee;
-            color: #cc0000;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #ffcccc;
-        }
-        .branding {
-            text-align: center;
-            font-size: 10px;
-            color: #94a3b8;
-            margin-top: 12px;
-        }
-    </style>
+        #draftStatus { min-height: 1.25rem; color: #86efac; font-size: .78rem; }
+
+        .skip-link { position: fixed; left: 1rem; top: -5rem; z-index: 100; padding: .75rem 1rem; background: #fff; color: #0f172a; border: 3px solid #fbbf24; border-radius: .5rem; font-weight: 800; }
+        .skip-link:focus { top: 1rem; }
+        .language-bar { max-width: 56rem; margin: 1rem auto 0; padding: 0 1.5rem; display: flex; justify-content: flex-end; align-items: center; gap: .6rem; }
+        .language-bar label { color: #334155; font-weight: 800; font-size: .875rem; }
+        .language-bar select { min-height: 44px; padding: .55rem 2.2rem .55rem .8rem; border: 2px solid #475569; border-radius: .65rem; background: #fff; color: #0f172a; font-weight: 700; }
+        .language-bar select:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid #fbbf24; outline-offset: 3px; }
+        @media (max-width: 640px) { .language-bar { justify-content: stretch; } .language-bar select { flex: 1; } }
+        .legal-safety { margin-top: 1.25rem; padding: 1rem; border: 2px solid #fbbf24; border-radius: 1rem; background: #2a210d; color: #f8fafc; }
+        .legal-safety h4 { margin: 0 0 .55rem; font-size: 1rem; }
+        .legal-safety p, .legal-safety li { color: #e2e8f0; font-size: .82rem; line-height: 1.5; }
+        .legal-safety a, .support-links a { color: #5eead4; text-decoration: underline; text-underline-offset: 3px; }
+        .terms-acceptance { display: flex; gap: .7rem; align-items: flex-start; margin-top: .9rem; }
+        .terms-acceptance input { width: 1.25rem; height: 1.25rem; margin-top: .15rem; flex: 0 0 auto; }
+        .terms-acceptance label { color: #f8fafc; font-weight: 750; font-size: .86rem; }
+        #copyButton:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
+        .support-links { margin-top: 1rem; text-align: center; color: #475569; font-size: .82rem; line-height: 1.7; }
+</style>
 </head>
 <body>
-
-<div class="container" id="app-container">
-    <!-- SECURITY LOCK SCREEN -->
-    <div id="locked-screen">
-        <h2 style="color:#cc0000;">Form Locked</h2>
-        <p id="lock-reason">This form is no longer available.</p>
+  <a class="skip-link" href="#inquiryForm">Skip to the inquiry form</a>
+  <section class="access-overlay" id="accessOverlay">
+    <form class="access-card" id="accessForm">
+      <h2>Open your purchased Stew–Captain Form</h2>
+      <p>Enter the same email used at checkout. We will email a secure sign-in link, then verify your active purchase.</p>
+      <label for="accessEmail">Purchase email</label>
+      <input id="accessEmail" type="email" autocomplete="email" required>
+      <div class="access-actions"><button id="magicLinkButton" type="submit">Email Secure Access Link</button><button id="signOutButton" type="button" hidden>Sign Out</button></div>
+      <div class="access-message" id="accessMessage" aria-live="polite"></div>
+    </form>
+  </section>
+  <div class="test-banner">TEST BRANCH · Canonical stewardess-to-captain form · Form answers stay on this device</div>
+  <main id="paidFormPage" role="main" hidden>
+    <!-- Navbar -->
+    <nav class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-x-3">
+                <div class="w-10 h-10 stew-accent rounded-2xl flex items-center justify-center shadow-lg shadow-rose-900/20">
+                    <i class="fa-solid fa-wand-magic-sparkles text-white text-xl"></i>
+                </div>
+                <div>
+                    <span class="font-bold text-xl tracking-wide">YachtCoreOS</span>
+                    <span class="stew-text text-xs block -mt-1 font-medium">Interior / Stew Edition</span>
+                </div>
+            </div>
+            <div class="text-xs text-slate-400 bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700">
+                <i class="fa-solid fa-lock text-rose-400 mr-1.5"></i> Canonical Stewardess-to-Captain Pilot
+            </div>
+        </div>
+    </nav>
+    <div class="language-bar">
+        <label for="languageSelect">Language</label>
+        <select id="languageSelect" autocomplete="off">
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="it">Italiano</option>
+            <option value="ru">Русский</option>
+        </select>
     </div>
 
-    <!-- ACTIVE FORM -->
-    <div id="active-form-wrapper">
-        <h2>YachtCoreOS Stew Inquiry</h2>
-        <div class="subtitle">Certified Direct-to-Stew Transmission Pipeline</div>
+    <!-- Header / Hero -->
+    <div class="max-w-4xl mx-auto px-6 pt-10 pb-6 text-center">
+        <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-rose-950/50 border border-rose-800/50 mb-4 text-xs font-medium text-rose-300">
+            <i class="fa-solid fa-circle-check text-rose-400 mr-2"></i> Stop the Endless Back-and-Forth Texting
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold heading-serif tracking-tight mb-3">Stew-Captain Quick Inquiry Form</h1>
+        <p class="text-base text-slate-400 max-w-xl mx-auto">Send this clean interior-focused form to captains inquiring about your stewardess services to lock down vessel details, pay, and rotation instantly.</p>
+    </div>
 
-        <form id="stewForm" action="https://formspree.io/f/your-form-endpoint-here" method="POST">
-            <input type="hidden" id="tokenField" name="security_token" value="">
-            <input type="hidden" id="stewEmailField" name="stew_destination" value="">
-
-            <div class="grid-row">
-                <div class="field-box"><input type="text" name="vessel_size" placeholder="Vessel Size (e.g. 150ft)"></div>
-                <div class="field-box"><input type="text" name="vessel_flag" placeholder="Flag (e.g. Marshall Islands)"></div>
-                <div class="field-box"><input type="text" name="vessel_year" placeholder="Year Built"></div>
-                <div class="field-box"><input type="text" name="vessel_make" placeholder="Make / Builder"></div>
-            </div>
-
-            <div class="grid-row">
-                <div class="field-box" style="grid-column: span 4;">
-                    <span style="font-size: 11px; font-weight: 600; color: #64748b;">Program Structure</span>
-                    <div class="pill-container" data-name="program_type">
-                        <span class="pill" onclick="selectPill(this)">Private</span>
-                        <span class="pill" onclick="selectPill(this)">Charter</span>
-                        <span class="pill" onclick="selectPill(this)">Hybrid</span>
-                        <span class="pill" onclick="selectPill(this, true)">Other Program</span>
+    <!-- Interactive Form Container -->
+    <div class="max-w-4xl mx-auto px-6 pb-20">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl">
+            
+            <form id="inquiryForm" class="space-y-8" autocomplete="off" aria-describedby="privacyNotice">
+                
+                <!-- SECTION 1: Vessel Basics -->
+                <div>
+                    <h3 class="text-lg font-semibold text-rose-300 border-b border-slate-800 pb-2 mb-4 flex items-center gap-x-2">
+                        <i class="fa-solid fa-ship"></i> 1. Vessel Overview
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Vessel Name</label>
+                            <input type="text" id="vesselName" placeholder="e.g. M/Y Sanctuary" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Size / Type</label>
+                            <input type="text" id="vesselSize" placeholder="e.g. 112’ Mangusta / Composite" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Year Built / Refit</label>
+                            <input type="text" id="vesselYear" placeholder="e.g. 2021 / 2025 Refit" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Flag State</label>
+                            <input type="text" id="vesselFlag" placeholder="e.g. Cayman Islands (Red Ensign)" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
                     </div>
-                    <input type="text" class="other-input" placeholder="Specify program details...">
+                </div>
+
+                <!-- SECTION 2: Program & Cruising -->
+                <div>
+                    <h3 class="text-lg font-semibold text-rose-300 border-b border-slate-800 pb-2 mb-4 flex items-center gap-x-2">
+                        <i class="fa-solid fa-compass"></i> 2. Program & Itinerary
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Program Structure</label>
+                            <select id="programType" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                                <option value="Private / Charter Hybrid">Private / Charter Hybrid</option>
+                                <option value="Strictly Private">Strictly Private</option>
+                                <option value="Busy Charter Program">Busy Charter Program</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Current Location / Home Port</label>
+                            <input type="text" id="homePort" placeholder="e.g. Fort Lauderdale, FL" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Expected Cruising Grounds</label>
+                            <input type="text" id="cruisingGrounds" placeholder="e.g. Bahamas winter, New England summer" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 3: Interior & Crew Setup -->
+                <div>
+                    <h3 class="text-lg font-semibold text-rose-300 border-b border-slate-800 pb-2 mb-4 flex items-center gap-x-2">
+                        <i class="fa-solid fa-champagne-glasses"></i> 3. Interior & Crew Details
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Total Crew Size</label>
+                            <input type="text" id="crewSize" placeholder="e.g. 8 crew total" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Interior Department Structure</label>
+                            <input type="text" id="interiorDept" placeholder="e.g. Chief Stew + 2nd Stew (You)" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Intended Role & Split (Stew Specific)</label>
+                            <input type="text" id="roleSplit" placeholder="e.g. Sole Stew / Service & Housekeeping split" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 4: Package, Pay & Rotation -->
+                <div>
+                    <h3 class="text-lg font-semibold text-rose-300 border-b border-slate-800 pb-2 mb-4 flex items-center gap-x-2">
+                        <i class="fa-solid fa-file-invoice-dollar"></i> 4. Compensation & Terms
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Offered Pay & Currency</label>
+                            <input type="text" id="offeredPay" placeholder="e.g. $5,500 USD / month" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Rotation / Leave Package</label>
+                            <input type="text" id="rotation" placeholder="e.g. Standard 38 days leave / year" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Contract Type</label>
+                            <input type="text" id="contractType" placeholder="e.g. MLC Standard / Seasonal / Permanent" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Flights & Medical Included?</label>
+                            <input type="text" id="benefits" placeholder="e.g. Annual flights + Medical included" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Expected Start Date</label>
+                            <input type="text" id="startDate" placeholder="e.g. Immediate / Sept 1st" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Guest / Owner Frequency</label>
+                            <input type="text" id="guestNotes" placeholder="e.g. Moderate owner use, 4 charter weeks" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 5: Additional Notes -->
+                <div>
+                    <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Extra Interior Notes / Requirements</label>
+                    <textarea id="extraNotes" rows="3" placeholder="e.g. Silver service experience required, non-smoker, uniforms provided..." class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500"></textarea>
+                </div>
+
+            </form>
+
+            <div class="draft-notice" id="privacyNotice">
+                <strong id="privacyHeading">Saved only on this device.</strong> <span id="privacyText">Your draft is not sent to YachtCoreOS or Supabase. Avoid entering sensitive personal, financial, or medical information on a shared device.</span>
+                <div class="draft-tools mt-3">
+                    <button type="button" id="clearDraftButton" class="clear-draft">Clear saved draft</button>
+                    <span id="draftStatus" role="status" aria-live="polite"></span>
                 </div>
             </div>
 
-            <div class="grid-row">
-                <div class="field-box" style="grid-column: span 4;">
-                    <span style="font-size: 11px; font-weight: 600; color: #64748b;">Contract Duration</span>
-                    <div class="pill-container" data-name="contract_term">
-                        <span class="pill" onclick="selectPill(this)">Temporary</span>
-                        <span class="pill" onclick="selectPill(this)">Part-Time</span>
-                        <span class="pill" onclick="selectPill(this)">Full-Time</span>
-                        <span class="pill" onclick="selectPill(this)">Seasonal</span>
-                    </div>
+            <section class="legal-safety" aria-labelledby="legalSafetyTitle">
+                <h4 id="legalSafetyTitle"><i class="fa-solid fa-scale-balanced" aria-hidden="true"></i> Important pilot notice</h4>
+                <p>This is an organizational communication tool—not an employment agreement and not legal, maritime-compliance, medical, tax, or financial advice. YachtCoreOS does not verify user-entered information or make employment decisions. Captains, employers, vessels, and candidates must independently review all terms and execute any legally required seafarer employment agreement.</p>
+                <p><a href="pilot-legal-policies.html" target="_blank" rel="noopener">Read the Pilot Legal &amp; Policies page</a> <strong>(draft pending attorney review)</strong>.</p>
+                <div class="terms-acceptance">
+                    <input type="checkbox" id="acceptPilotTerms">
+                    <label for="acceptPilotTerms">I have read the pilot notice, will verify the information independently, and accept Pilot Terms version 2026-08-15.</label>
                 </div>
-            </div>
+                <p id="termsStatus" role="status" aria-live="polite"></p>
+            </section>
 
-            <div class="grid-row">
-                <div class="field-box" style="grid-column: span 4;">
-                    <span style="font-size: 11px; font-weight: 600; color: #64748b;">Usage Intensity</span>
-                    <div class="pill-container" data-name="usage_intensity">
-                        <span class="pill" onclick="selectPill(this)">Light Use</span>
-                        <span class="pill" onclick="selectPill(this)">Moderate Use</span>
-                        <span class="pill" onclick="selectPill(this)">Heavy Use</span>
-                        <span class="pill" onclick="selectPill(this)">Live-Aboard</span>
-                    </div>
+            <!-- Output Action Area -->
+            <div class="mt-8 pt-6 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div id="copyInstruction" class="text-xs text-slate-400 text-center md:text-left">
+                    <i class="fa-solid fa-circle-info text-rose-400 mr-1"></i> Tap below to generate a clean, formatted text response for the captain.
                 </div>
+                <button type="button" id="copyButton" onclick="generateAndCopyAnswers()" disabled aria-describedby="termsStatus" class="w-full md:w-auto px-8 py-3.5 stew-accent hover:opacity-90 font-semibold rounded-2xl shadow-lg shadow-rose-900/30 flex items-center justify-center gap-x-2 transition-all">
+                    <i class="fa-regular fa-clipboard"></i> <span id="copyButtonText">Copy Formatted Answers</span>
+                </button>
             </div>
 
-            <div class="grid-row">
-                <div class="field-box" style="grid-column: span 4;">
-                    <span style="font-size: 11px; font-weight: 600; color: #64748b;">Primary Location / Port</span>
-                    <div class="pill-container" data-name="location">
-                        <span class="pill" onclick="selectPill(this)">Miami</span>
-                        <span class="pill" onclick="selectPill(this)">Fort Lauderdale</span>
-                        <span class="pill" onclick="selectPill(this)">West Palm</span>
-                        <span class="pill" onclick="selectPill(this)">New York</span>
-                        <span class="pill" onclick="selectPill(this, true)">Other Port</span>
-                    </div>
-                    <input type="text" class="other-input" placeholder="Specify port...">
-                </div>
+            <!-- Success Alert Banner -->
+            <div id="copyAlert" role="status" aria-live="polite" class="hidden mt-4 p-4 bg-emerald-950/60 border border-emerald-800/60 text-emerald-300 rounded-2xl text-center text-sm font-medium animate-pulse">
+                <i class="fa-solid fa-check-circle mr-2"></i> Copied to clipboard! Ready to paste back to your chat.
             </div>
 
-            <div class="grid-row">
-                <div class="field-box" style="grid-column: span 4;">
-                    <span style="font-size: 11px; font-weight: 600; color: #64748b;">Crew Complement</span>
-                    <div class="pill-container" data-name="crew_size">
-                        <span class="pill" onclick="selectPill(this)">2 Crew</span>
-                        <span class="pill" onclick="selectPill(this)">3 Crew</span>
-                        <span class="pill" onclick="selectPill(this)">4 Crew</span>
-                        <span class="pill" onclick="selectPill(this, true)">Total / Other</span>
-                    </div>
-                    <input type="text" class="other-input" placeholder="Specify crew total...">
-                </div>
-            </div>
+        </div>
+    </div>
 
-            <div class="grid-row">
-                <div class="field-box"><input type="text" name="prev_pay" placeholder="Prev. Pay Rate"></div>
-                <div class="field-box"><input type="text" name="current_offer" placeholder="Current Offer ($)"></div>
-                <div class="field-box"><input type="text" name="med_ins" placeholder="Med Ins Included?"></div>
-                <div class="field-box"><input type="text" name="comp_other" placeholder="Other Perks / Tips"></div>
-            </div>
+    <!-- Footer -->
+    <footer class="text-center pb-12 text-xs text-slate-600">
+        YachtCoreOS • Built for Elite Interior Professionals
+        <div class="support-links">
+            <a href="mailto:yachtcoreconnect@yachtcoreos.com?subject=YachtCoreOS%20Stew-Captain%20Support">Contact support</a>
+            ·
+            <a href="mailto:yachtcoreconnect@yachtcoreos.com?subject=Report%20YachtCoreOS%20Issue&body=Page%3A%20Stew-Captain%20Form%0ADevice%20and%20browser%3A%20%0ATime%3A%20%0AIssue%3A%20%0A%0ADo%20not%20include%20passwords%2C%20card%20details%2C%20passport%20data%2C%20or%20medical%20records.">Report an issue</a>
+            ·
+            <a href="pilot-legal-policies.html">Legal &amp; policies</a>
+            <div>Do not email passwords, card details, passport data, or medical records.</div>
+        </div>
+    </footer>
 
-            <div class="grid-row">
-                <div class="field-box"><input type="text" name="start_date" placeholder="Start Date"></div>
-                <div class="field-box"><input type="text" name="finish_date" placeholder="Finish Date"></div>
-                <div class="field-box"><input type="text" name="date_from" placeholder="From..."></div>
-                <div class="field-box"><input type="text" name="date_to" placeholder="To..."></div>
-            </div>
+    <!-- Script to Generate & Copy Structured Text -->
+    <script>
+        const I18N = {
+          en: {
+            language:'Language', title:'Stew-Captain Quick Inquiry Form', intro:'Send this clean interior-focused form to captains inquiring about your stewardess services to lock down vessel details, pay, and rotation instantly.',
+            sections:['1. Vessel Overview','2. Program & Itinerary','3. Interior & Crew Details','4. Compensation & Terms'],
+            fields:{
+              vesselName:['Vessel Name','e.g. M/Y Sanctuary'],vesselSize:['Size / Type','e.g. 112 ft Mangusta / Composite'],vesselYear:['Year Built / Refit','e.g. 2021 / 2025 Refit'],vesselFlag:['Flag State','e.g. Cayman Islands (Red Ensign)'],
+              programType:['Program Structure',''],homePort:['Current Location / Home Port','e.g. Fort Lauderdale, FL'],cruisingGrounds:['Expected Cruising Grounds','e.g. Bahamas winter, New England summer'],
+              crewSize:['Total Crew Size','e.g. 8 crew total'],interiorDept:['Interior Department Structure','e.g. Chief Stew + 2nd Stew'],roleSplit:['Intended Role & Split (Stew Specific)','e.g. Sole Stew / Service & Housekeeping split'],
+              offeredPay:['Offered Pay, Currency & Period','e.g. $5,500 USD / month'],rotation:['Rotation / Leave Package','e.g. 2:2 rotation or 38 days leave / year'],contractType:['Contract Type','e.g. Seasonal / Permanent'],benefits:['Flights & Medical Included?','e.g. Annual flights + medical included'],startDate:['Expected Start Date','e.g. Immediate / Sept 1'],guestNotes:['Guest / Owner Frequency','e.g. Moderate owner use, 4 charter weeks'],extraNotes:['Extra Interior Notes / Requirements','e.g. Service style, uniform and experience requirements']
+            },
+            options:['Private / Charter Hybrid','Strictly Private','Busy Charter Program'], privacy:'Saved only on this device. Your draft is not sent to YachtCoreOS or Supabase. Avoid sensitive information on a shared device.', clear:'Clear saved draft', copy:'Copy Formatted Answers', instruction:'Tap below to generate a clean, formatted text response for the captain.',
+            output:['STEWARDESS POSITION INQUIRY DETAILS','VESSEL OVERVIEW','PROGRAM & ITINERARY','INTERIOR & CREW','PACKAGE & TERMS','EXTRA NOTES','Not specified']
+          },
+          es: {
+            language:'Idioma', title:'Formulario rápido de consulta Stew–Capitán', intro:'Envíe este formulario al capitán para confirmar los detalles del yate, el puesto, la remuneración y la rotación.',
+            sections:['1. Descripción del yate','2. Programa e itinerario','3. Interior y tripulación','4. Remuneración y condiciones'],
+            fields:{
+              vesselName:['Nombre del yate','p. ej., M/Y Sanctuary'],vesselSize:['Eslora / Tipo','p. ej., Mangusta de 112 pies / Composite'],vesselYear:['Año / Refit','p. ej., 2021 / Refit 2025'],vesselFlag:['Bandera','p. ej., Islas Caimán'],
+              programType:['Tipo de programa',''],homePort:['Ubicación / Puerto base','p. ej., Fort Lauderdale, FL'],cruisingGrounds:['Zona de navegación prevista','p. ej., Bahamas en invierno'],
+              crewSize:['Número total de tripulantes','p. ej., 8 tripulantes'],interiorDept:['Estructura del departamento interior','p. ej., Chief Stew + 2nd Stew'],roleSplit:['Puesto y distribución de funciones','p. ej., Sole Stew / servicio y housekeeping'],
+              offeredPay:['Salario, moneda y período','p. ej., 5.500 USD / mes'],rotation:['Rotación / Vacaciones','p. ej., rotación 2:2'],contractType:['Tipo de contrato','p. ej., estacional / permanente'],benefits:['¿Vuelos y seguro médico incluidos?','p. ej., vuelos anuales + seguro médico'],startDate:['Fecha prevista de inicio','p. ej., inmediata / 1 de septiembre'],guestNotes:['Frecuencia de propietarios / invitados','p. ej., uso moderado, 4 semanas de charter'],extraNotes:['Notas / Requisitos adicionales','p. ej., estilo de servicio, uniforme y experiencia']
+            },
+            options:['Privado / Charter','Solo privado','Programa intensivo de charter'], privacy:'Guardado únicamente en este dispositivo. El borrador no se envía a YachtCoreOS ni a Supabase. Evite información sensible en dispositivos compartidos.', clear:'Borrar borrador guardado', copy:'Copiar respuestas formateadas', instruction:'Pulse para generar una respuesta clara y formateada para el capitán.',
+            output:['DETALLES DE LA CONSULTA PARA EL PUESTO DE STEWARDESS','DESCRIPCIÓN DEL YATE','PROGRAMA E ITINERARIO','INTERIOR Y TRIPULACIÓN','REMUNERACIÓN Y CONDICIONES','NOTAS ADICIONALES','No especificado']
+          },
+          fr: {
+            language:'Langue', title:'Formulaire rapide Stew–Capitaine', intro:'Envoyez ce formulaire au capitaine afin de confirmer les détails du yacht, du poste, de la rémunération et de la rotation.',
+            sections:['1. Présentation du yacht','2. Programme et itinéraire','3. Intérieur et équipage','4. Rémunération et conditions'],
+            fields:{
+              vesselName:['Nom du yacht','ex. M/Y Sanctuary'],vesselSize:['Taille / Type','ex. Mangusta 112 pieds / Composite'],vesselYear:['Année / Refit','ex. 2021 / Refit 2025'],vesselFlag:['Pavillon','ex. Îles Caïmans'],
+              programType:['Type de programme',''],homePort:['Position / Port d’attache','ex. Fort Lauderdale, FL'],cruisingGrounds:['Zones de navigation prévues','ex. Bahamas en hiver'],
+              crewSize:['Effectif total','ex. 8 membres'],interiorDept:['Structure de l’équipe intérieure','ex. Chief Stew + 2nd Stew'],roleSplit:['Poste et répartition des tâches','ex. Sole Stew / service et housekeeping'],
+              offeredPay:['Salaire, devise et période','ex. 5 500 USD / mois'],rotation:['Rotation / Congés','ex. rotation 2:2'],contractType:['Type de contrat','ex. saisonnier / permanent'],benefits:['Vols et couverture médicale inclus ?','ex. vols annuels + couverture médicale'],startDate:['Date de début prévue','ex. immédiate / 1er septembre'],guestNotes:['Fréquence propriétaires / invités','ex. usage modéré, 4 semaines de charter'],extraNotes:['Notes / Exigences supplémentaires','ex. style de service, uniforme et expérience']
+            },
+            options:['Privé / Charter','Strictement privé','Programme charter intensif'], privacy:'Enregistré uniquement sur cet appareil. Le brouillon n’est envoyé ni à YachtCoreOS ni à Supabase. Évitez les informations sensibles sur un appareil partagé.', clear:'Effacer le brouillon', copy:'Copier les réponses formatées', instruction:'Appuyez pour générer une réponse claire et formatée pour le capitaine.',
+            output:['DÉTAILS DE LA DEMANDE POUR LE POSTE DE STEWARDESS','PRÉSENTATION DU YACHT','PROGRAMME ET ITINÉRAIRE','INTÉRIEUR ET ÉQUIPAGE','RÉMUNÉRATION ET CONDITIONS','NOTES SUPPLÉMENTAIRES','Non précisé']
+          },
+          it: {
+            language:'Lingua', title:'Modulo rapido Stew–Comandante', intro:'Invia questo modulo al comandante per confermare i dettagli dello yacht, del ruolo, della retribuzione e della rotazione.',
+            sections:['1. Panoramica dello yacht','2. Programma e itinerario','3. Interni ed equipaggio','4. Retribuzione e condizioni'],
+            fields:{
+              vesselName:['Nome dello yacht','es. M/Y Sanctuary'],vesselSize:['Lunghezza / Tipo','es. Mangusta 112 piedi / Composite'],vesselYear:['Anno / Refit','es. 2021 / Refit 2025'],vesselFlag:['Bandiera','es. Isole Cayman'],
+              programType:['Tipo di programma',''],homePort:['Posizione / Porto base','es. Fort Lauderdale, FL'],cruisingGrounds:['Aree di navigazione previste','es. Bahamas in inverno'],
+              crewSize:['Numero totale equipaggio','es. 8 membri'],interiorDept:['Struttura del reparto interni','es. Chief Stew + 2nd Stew'],roleSplit:['Ruolo e divisione dei compiti','es. Sole Stew / servizio e housekeeping'],
+              offeredPay:['Retribuzione, valuta e periodo','es. 5.500 USD / mese'],rotation:['Rotazione / Ferie','es. rotazione 2:2'],contractType:['Tipo di contratto','es. stagionale / permanente'],benefits:['Voli e copertura medica inclusi?','es. voli annuali + copertura medica'],startDate:['Data di inizio prevista','es. immediata / 1 settembre'],guestNotes:['Frequenza proprietari / ospiti','es. uso moderato, 4 settimane charter'],extraNotes:['Note / Requisiti aggiuntivi','es. stile di servizio, uniforme ed esperienza']
+            },
+            options:['Privato / Charter','Solo privato','Programma charter intenso'], privacy:'Salvato soltanto su questo dispositivo. La bozza non viene inviata a YachtCoreOS o Supabase. Evita dati sensibili sui dispositivi condivisi.', clear:'Cancella bozza salvata', copy:'Copia risposte formattate', instruction:'Tocca per generare una risposta chiara e formattata per il comandante.',
+            output:['DETTAGLI DELLA RICHIESTA PER LA POSIZIONE DI STEWARDESS','PANORAMICA DELLO YACHT','PROGRAMMA E ITINERARIO','INTERNI ED EQUIPAGGIO','RETRIBUZIONE E CONDIZIONI','NOTE AGGIUNTIVE','Non specificato']
+          },
+          ru: {
+            language:'Язык', title:'Краткая анкета Stew–Капитан', intro:'Отправьте эту анкету капитану, чтобы уточнить данные яхты, обязанности, оплату и график.',
+            sections:['1. Данные яхты','2. Программа и маршрут','3. Интерьерная команда','4. Оплата и условия'],
+            fields:{
+              vesselName:['Название яхты','например, M/Y Sanctuary'],vesselSize:['Длина / Тип','например, Mangusta 112 футов / Composite'],vesselYear:['Год / Рефит','например, 2021 / рефит 2025'],vesselFlag:['Флаг','например, Каймановы острова'],
+              programType:['Тип программы',''],homePort:['Местоположение / Порт приписки','например, Fort Lauderdale, FL'],cruisingGrounds:['Планируемый район плавания','например, Багамы зимой'],
+              crewSize:['Общее число экипажа','например, 8 человек'],interiorDept:['Состав интерьерной команды','например, Chief Stew + 2nd Stew'],roleSplit:['Должность и обязанности','например, Sole Stew / сервис и housekeeping'],
+              offeredPay:['Оплата, валюта и период','например, 5 500 USD / месяц'],rotation:['Ротация / Отпуск','например, ротация 2:2'],contractType:['Тип контракта','например, сезонный / постоянный'],benefits:['Перелёты и медстраховка включены?','например, ежегодные перелёты + медстраховка'],startDate:['Предполагаемая дата начала','например, сразу / 1 сентября'],guestNotes:['Частота пребывания владельца / гостей','например, умеренное использование, 4 недели чартера'],extraNotes:['Дополнительные требования','например, стиль сервиса, форма и опыт']
+            },
+            options:['Частная / Чартер','Только частная','Активная чартерная программа'], privacy:'Черновик хранится только на этом устройстве и не отправляется в YachtCoreOS или Supabase. Не вводите конфиденциальные данные на общем устройстве.', clear:'Удалить сохранённый черновик', copy:'Копировать ответы', instruction:'Нажмите, чтобы создать аккуратно оформленный ответ для капитана.',
+            output:['ДАННЫЕ ПО ВАКАНСИИ СТЮАРДЕССЫ','ДАННЫЕ ЯХТЫ','ПРОГРАММА И МАРШРУТ','ИНТЕРЬЕР И ЭКИПАЖ','ОПЛАТА И УСЛОВИЯ','ДОПОЛНИТЕЛЬНЫЕ ЗАМЕТКИ','Не указано']
+          }
+        };
+        let activeLanguage = localStorage.getItem('yachtcoreos.stew-captain.language') || 'en';
 
-            <div class="grid-row"> 
+        function bindAccessibleLabels() {
+            document.querySelectorAll('#inquiryForm input, #inquiryForm select, #inquiryForm textarea').forEach(control => {
+                const label = control.closest('div')?.querySelector('label');
+                if (label && control.id) label.htmlFor = control.id;
+            });
+        }
+
+        function applyLanguage(code) {
+            const t = I18N[code] || I18N.en;
+            activeLanguage = code;
+            document.documentElement.lang = code;
+            localStorage.setItem('yachtcoreos.stew-captain.language', code);
+            document.querySelector('.language-bar label').textContent = t.language;
+            document.querySelector('.heading-serif').textContent = t.title;
+            document.querySelector('.heading-serif + p').textContent = t.intro;
+            document.querySelectorAll('#inquiryForm h3').forEach((heading, index) => {
+              const icon = heading.querySelector('i');
+              heading.textContent = '';
+              if (icon) heading.append(icon, document.createTextNode(' ' + t.sections[index]));
+            });
+            Object.entries(t.fields).forEach(([id, values]) => {
+              const control = document.getElementById(id);
+              if (!control) return;
+              const label = control.closest('div')?.querySelector('label');
+              if (label) label.textContent = values[0];
+              if (values[1]) control.placeholder = values[1];
+            });
+            const program = document.getElementById('programType');
+            Array.from(program.options).forEach((option,index) => { option.textContent = t.options[index]; });
+            document.getElementById('privacyHeading').textContent = t.privacy.split('.')[0] + '.';
+            document.getElementById('privacyText').textContent = t.privacy.split('.').slice(1).join('.').trim();
+            document.getElementById('clearDraftButton').textContent = t.clear;
+            document.getElementById('copyButtonText').textContent = t.copy;
+            document.getElementById('copyInstruction').lastChild.textContent = ' ' + t.instruction;
+            bindAccessibleLabels();
+        }
+
+        const PILOT_TERMS_VERSION = '2026-08-15';
+        const PILOT_TERMS_KEY = 'yachtcoreos.stew-captain.terms';
+
+        function restoreTermsAcceptance() {
+            const checkbox = document.getElementById('acceptPilotTerms');
+            const copyButton = document.getElementById('copyButton');
+            try {
+                const record = JSON.parse(localStorage.getItem(PILOT_TERMS_KEY) || 'null');
+                checkbox.checked = record?.version === PILOT_TERMS_VERSION;
+            } catch (_error) {
+                localStorage.removeItem(PILOT_TERMS_KEY);
+            }
+            copyButton.disabled = !checkbox.checked;
+        }
+
+        function updateTermsAcceptance(event) {
+            const accepted = event.target.checked;
+            const copyButton = document.getElementById('copyButton');
+            const status = document.getElementById('termsStatus');
+            copyButton.disabled = !accepted;
+            if (accepted) {
+                localStorage.setItem(PILOT_TERMS_KEY, JSON.stringify({version:PILOT_TERMS_VERSION, acceptedAt:new Date().toISOString()}));
+                status.textContent = 'Pilot terms accepted on this device.';
+            } else {
+                localStorage.removeItem(PILOT_TERMS_KEY);
+                status.textContent = 'Accept the pilot notice to enable copying.';
+            }
+        }
+
+        const DRAFT_STORAGE_KEY = 'yachtcoreos.stew-captain-form.draft.v1';
+
+        function getDraftControls() {
+            return Array.from(document.querySelectorAll('#inquiryForm input, #inquiryForm select, #inquiryForm textarea'));
+        }
+
+        function saveDraft() {
+            const draft = {};
+            getDraftControls().forEach(control => {
+                if (!control.id) return;
+                draft[control.id] = control.type === 'checkbox' ? control.checked : control.value;
+            });
+            try {
+                localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
+                const status = document.getElementById('draftStatus');
+                status.textContent = 'Draft saved on this device.';
+                window.clearTimeout(saveDraft.statusTimer);
+                saveDraft.statusTimer = window.setTimeout(() => { status.textContent = ''; }, 1800);
+            } catch (_error) {
+                document.getElementById('draftStatus').textContent = 'This browser could not save the draft.';
+            }
+        }
+
+        function restoreDraft() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(DRAFT_STORAGE_KEY) || '{}');
+                getDraftControls().forEach(control => {
+                    if (!control.id || !Object.prototype.hasOwnProperty.call(saved, control.id)) return;
+                    if (control.type === 'checkbox') control.checked = Boolean(saved[control.id]);
+                    else control.value = saved[control.id];
+                });
+            } catch (_error) {
+                localStorage.removeItem(DRAFT_STORAGE_KEY);
+            }
+        }
+
+        function clearDraft() {
+            if (!window.confirm('Clear every saved answer from this device?')) return;
+            localStorage.removeItem(DRAFT_STORAGE_KEY);
+            document.getElementById('inquiryForm').reset();
+            document.getElementById('draftStatus').textContent = 'Saved draft cleared.';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            bindAccessibleLabels();
+            const languageSelect = document.getElementById('languageSelect');
+            languageSelect.value = I18N[activeLanguage] ? activeLanguage : 'en';
+            languageSelect.addEventListener('change', event => applyLanguage(event.target.value));
+            applyLanguage(languageSelect.value);
+            restoreDraft();
+            const form = document.getElementById('inquiryForm');
+            form.addEventListener('input', saveDraft);
+            form.addEventListener('change', saveDraft);
+            document.getElementById('clearDraftButton').addEventListener('click', clearDraft);
+            restoreTermsAcceptance();
+            document.getElementById('acceptPilotTerms').addEventListener('change', updateTermsAcceptance);
+        });
+
+        function generateAndCopyAnswers() {
+            if (!document.getElementById('acceptPilotTerms').checked) {
+                document.getElementById('termsStatus').textContent = 'Accept the pilot notice before copying.';
+                document.getElementById('acceptPilotTerms').focus();
+                return;
+            }
+            const t = I18N[activeLanguage] || I18N.en;
+            const getVal = (id) => document.getElementById(id).value.trim() || t.output[6];
+
+            const outputText = 
+`⚓ *${t.output[0]}* ⚓
+
+*1. ${t.output[1]}*
+• ${t.fields.vesselName[0]}: ${getVal('vesselName')}
+• ${t.fields.vesselSize[0]}: ${getVal('vesselSize')}
+• ${t.fields.vesselYear[0]}: ${getVal('vesselYear')}
+• ${t.fields.vesselFlag[0]}: ${getVal('vesselFlag')}
+
+*2. ${t.output[2]}*
+• ${t.fields.programType[0]}: ${getVal('programType')}
+• ${t.fields.homePort[0]}: ${getVal('homePort')}
+• ${t.fields.cruisingGrounds[0]}: ${getVal('cruisingGrounds')}
+
+*3. ${t.output[3]}*
+• ${t.fields.crewSize[0]}: ${getVal('crewSize')}
+• ${t.fields.interiorDept[0]}: ${getVal('interiorDept')}
+• ${t.fields.roleSplit[0]}: ${getVal('roleSplit')}
+
+*4. ${t.output[4]}*
+• ${t.fields.offeredPay[0]}: ${getVal('offeredPay')}
+• ${t.fields.rotation[0]}: ${getVal('rotation')}
+• ${t.fields.contractType[0]}: ${getVal('contractType')}
+• ${t.fields.benefits[0]}: ${getVal('benefits')}
+• ${t.fields.startDate[0]}: ${getVal('startDate')}
+• ${t.fields.guestNotes[0]}: ${getVal('guestNotes')}
+
+*5. ${t.output[5]}*
+• ${getVal('extraNotes')}
+
+---
+*Generated via YachtCoreOS • Interior Edition*`;
+
+            navigator.clipboard.writeText(outputText).then(() => {
+                const alertBox = document.getElementById('copyAlert');
+                alertBox.classList.remove('hidden');
+                setTimeout(() => {
+                    alertBox.classList.add('hidden');
+                }, 4000);
+            }).catch(err => {
+                alert('Failed to copy text. Please try again.');
+            });
+        }
+    </script>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+'use strict';
+const SUPABASE_URL="https://tfzbdevnhzzbbhtsarid.supabase.co";
+const SUPABASE_PUBLIC_KEY="sb_publishable_56xqPAuxCFUe7edhDUzUaQ_7aZQtOUI";
+const ACCESS_ENDPOINT=SUPABASE_URL+"/functions/v1/check-stew-captain-access";
+const accessOverlay=document.getElementById("accessOverlay"),accessForm=document.getElementById("accessForm"),accessEmail=document.getElementById("accessEmail"),accessMessage=document.getElementById("accessMessage"),magicLinkButton=document.getElementById("magicLinkButton"),signOutButton=document.getElementById("signOutButton"),paidFormPage=document.getElementById("paidFormPage");
+let authClient=null;
+function setAccessMessage(message,type=""){accessMessage.textContent=message;accessMessage.className="access-message"+(type?" "+type:"")}
+async function verifyEntitlement(session){paidFormPage.hidden=true;accessOverlay.hidden=false;signOutButton.hidden=!session;if(!session){setAccessMessage("Enter your purchase email to receive a secure access link.");return}setAccessMessage("Verifying your purchase…");const response=await fetch(ACCESS_ENDPOINT,{method:"POST",headers:{apikey:SUPABASE_PUBLIC_KEY,authorization:"Bearer "+session.access_token,"content-type":"application/json"},body:"{}"});const result=await response.json().catch(()=>({}));if(!response.ok||result.allowed!==true){setAccessMessage("No active Stew–Captain Form purchase was found for this signed-in email.","error");return}accessOverlay.hidden=true;paidFormPage.hidden=false;setAccessMessage("Purchase verified.","success")}
+async function initializeAccess(){if(!window.supabase?.createClient){setAccessMessage("Secure sign-in could not load. Refresh and try again.","error");return}authClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLIC_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});const{data}=await authClient.auth.getSession();await verifyEntitlement(data?.session??null);authClient.auth.onAuthStateChange((_event,session)=>setTimeout(()=>verifyEntitlement(session),0))}
+accessForm.addEventListener("submit",async event=>{event.preventDefault();if(!authClient)return;const email=accessEmail.value.trim();if(!email)return;magicLinkButton.disabled=true;setAccessMessage("Sending secure access link…");const{error}=await authClient.auth.signInWithOtp({email,options:{emailRedirectTo:window.location.origin+window.location.pathname}});magicLinkButton.disabled=false;setAccessMessage(error?error.message:"Check your email and open the secure sign-in link on this device.",error?"error":"success")});
+signOutButton.addEventListener("click",async()=>{if(authClient)await authClient.auth.signOut()});
+initializeAccess();
+</script>
+</body>
+</html>
