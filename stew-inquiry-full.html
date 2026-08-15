@@ -13,6 +13,49 @@
         .stew-text { color: #fb7185; }
     
     .test-banner{padding:10px 16px;text-align:center;background:#7d4d00;color:#fff;font-weight:800}.access-overlay{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:20px;background:rgba(3,10,16,.96)}.access-overlay[hidden],#paidFormPage[hidden]{display:none}.access-card{width:min(460px,100%);padding:24px;background:#102638;border:1px solid rgba(255,255,255,.14);border-radius:18px;color:#eef7ff}.access-card p{color:#a9bece;line-height:1.5}.access-card label{display:block;margin:12px 0 7px}.access-card input{width:100%;padding:12px;border:1px solid #45667b;border-radius:10px;background:#081b29;color:#eef7ff}.access-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.access-actions button{padding:12px 16px;border:0;border-radius:10px;background:#39d1bb;color:#04241f;font-weight:900}.access-message{min-height:20px;margin-top:12px;color:#a9bece;font-size:13px}.access-message.error{color:#ff7777}.access-message.success{color:#39d1bb}
+        body { background: #f8fafc; color: #0f172a; }
+        nav .font-bold, nav .text-xs { color: #f8fafc; }
+        #inquiryForm input,
+        #inquiryForm select,
+        #inquiryForm textarea {
+            color: #f8fafc;
+            caret-color: #fb7185;
+        }
+        #inquiryForm input::placeholder,
+        #inquiryForm textarea::placeholder { color: #94a3b8; opacity: 1; }
+        #inquiryForm label { color: #cbd5e1; }
+        #inquiryForm input:focus,
+        #inquiryForm select:focus,
+        #inquiryForm textarea:focus {
+            border-color: #fb7185;
+            box-shadow: 0 0 0 3px rgba(251, 113, 133, .22);
+        }
+        .draft-notice {
+            margin-top: 1.25rem;
+            padding: 1rem;
+            border: 1px solid #475569;
+            border-radius: 1rem;
+            background: #172033;
+            color: #cbd5e1;
+            font-size: .82rem;
+            line-height: 1.5;
+        }
+        .draft-notice strong { color: #f8fafc; }
+        .draft-tools { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
+        .clear-draft {
+            padding: .75rem 1rem;
+            border: 1px solid #64748b;
+            border-radius: .75rem;
+            background: transparent;
+            color: #f8fafc;
+            font-weight: 700;
+        }
+        .clear-draft:focus-visible {
+            outline: 3px solid #fbbf24;
+            outline-offset: 3px;
+        }
+        #draftStatus { min-height: 1.25rem; color: #86efac; font-size: .78rem; }
+
 </style>
 </head>
 <body>
@@ -59,7 +102,7 @@
     <div class="max-w-4xl mx-auto px-6 pb-20">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl">
             
-            <form id="inquiryForm" class="space-y-8">
+            <form id="inquiryForm" class="space-y-8" autocomplete="off">
                 
                 <!-- SECTION 1: Vessel Basics -->
                 <div>
@@ -173,6 +216,14 @@
 
             </form>
 
+            <div class="draft-notice">
+                <strong>Saved only on this device.</strong> Your draft is not sent to YachtCoreOS or Supabase. Avoid entering sensitive personal, financial, or medical information on a shared device.
+                <div class="draft-tools mt-3">
+                    <button type="button" id="clearDraftButton" class="clear-draft">Clear saved draft</button>
+                    <span id="draftStatus" role="status" aria-live="polite"></span>
+                </div>
+            </div>
+
             <!-- Output Action Area -->
             <div class="mt-8 pt-6 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
                 <div class="text-xs text-slate-400 text-center md:text-left">
@@ -198,6 +249,57 @@
 
     <!-- Script to Generate & Copy Structured Text -->
     <script>
+        const DRAFT_STORAGE_KEY = 'yachtcoreos.stew-captain-form.draft.v1';
+
+        function getDraftControls() {
+            return Array.from(document.querySelectorAll('#inquiryForm input, #inquiryForm select, #inquiryForm textarea'));
+        }
+
+        function saveDraft() {
+            const draft = {};
+            getDraftControls().forEach(control => {
+                if (!control.id) return;
+                draft[control.id] = control.type === 'checkbox' ? control.checked : control.value;
+            });
+            try {
+                localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
+                const status = document.getElementById('draftStatus');
+                status.textContent = 'Draft saved on this device.';
+                window.clearTimeout(saveDraft.statusTimer);
+                saveDraft.statusTimer = window.setTimeout(() => { status.textContent = ''; }, 1800);
+            } catch (_error) {
+                document.getElementById('draftStatus').textContent = 'This browser could not save the draft.';
+            }
+        }
+
+        function restoreDraft() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(DRAFT_STORAGE_KEY) || '{}');
+                getDraftControls().forEach(control => {
+                    if (!control.id || !Object.prototype.hasOwnProperty.call(saved, control.id)) return;
+                    if (control.type === 'checkbox') control.checked = Boolean(saved[control.id]);
+                    else control.value = saved[control.id];
+                });
+            } catch (_error) {
+                localStorage.removeItem(DRAFT_STORAGE_KEY);
+            }
+        }
+
+        function clearDraft() {
+            if (!window.confirm('Clear every saved answer from this device?')) return;
+            localStorage.removeItem(DRAFT_STORAGE_KEY);
+            document.getElementById('inquiryForm').reset();
+            document.getElementById('draftStatus').textContent = 'Saved draft cleared.';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            restoreDraft();
+            const form = document.getElementById('inquiryForm');
+            form.addEventListener('input', saveDraft);
+            form.addEventListener('change', saveDraft);
+            document.getElementById('clearDraftButton').addEventListener('click', clearDraft);
+        });
+
         function generateAndCopyAnswers() {
             const getVal = (id) => document.getElementById(id).value.trim() || 'Not specified';
 
