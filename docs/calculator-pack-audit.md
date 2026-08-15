@@ -54,6 +54,8 @@ All three are low-risk productivity tools. They organize user-entered informatio
 - A branch-specific success page is staged for later use, but is not configured as the Payment Link return while the Vercel preview remains access-protected.
 - Both confirmation surfaces state that redirect or display alone does not prove payment.
 - Manual delivery follows `docs/calculator-pack-delivery-runbook.md`.
+- Checkout-adjacent copy links to the combined test terms, privacy, refund, and 18+ notice.
+- The privacy notice limits collection to email, Stripe purchase identifiers/status, delivery records, and minimal product events; calculator inputs remain local.
 - The ZIP checksum matches the audited package before every delivery.
 
 ## Explicitly excluded
