@@ -1,224 +1,265 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YachtCoreOS | Stew–Captain Hiring Form</title>
-  <style>
-    :root { --navy:#071522; --panel:#102638; --line:#2b4b61; --text:#eff8ff; --muted:#a9bece; --aqua:#39d1bb; --gold:#f4ba55; --danger:#ff7777; }
-    * { box-sizing:border-box; }
-    body { margin:0; min-height:100vh; font-family:Inter,Arial,sans-serif; background:linear-gradient(180deg,#06111c,#0b2233); color:var(--text); }
-    .test-banner { padding:10px 16px; text-align:center; background:#7d4d00; font-weight:800; }
-    .access-overlay { position:fixed; inset:0; z-index:50; display:grid; place-items:center; padding:20px; background:rgba(3,10,16,.96); }
-    .access-overlay[hidden] { display:none; }
-    .access-card { width:min(460px,100%); padding:24px; background:var(--panel); border:1px solid var(--line); border-radius:18px; }
-    .access-card p { color:var(--muted); line-height:1.5; }
-    .access-message { min-height:20px; margin-top:12px; color:var(--muted); font-size:13px; }
-    .access-message.error { color:var(--danger); }
-    .access-message.success { color:var(--aqua); }
-    .page[hidden] { display:none; }
-    .page { width:min(900px,100%); margin:auto; padding:26px 18px 60px; }
-    .brand { color:var(--aqua); font-size:13px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
-    h1 { margin:8px 0 4px; font-size:clamp(28px,6vw,44px); }
-    h2 { margin:0 0 8px; }
-    .lead,.fine { color:var(--muted); line-height:1.5; }
-    .grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:22px; }
-    .card { padding:18px; background:var(--panel); border:1px solid var(--line); border-radius:16px; }
-    .wide { grid-column:1/-1; }
-    label { display:block; color:var(--muted); font-size:13px; font-weight:800; margin-bottom:7px; }
-    input,select,textarea { width:100%; padding:12px; border:1px solid #45667b; border-radius:10px; background:#081b29; color:var(--text); font:inherit; }
-    textarea { min-height:98px; resize:vertical; }
-    .actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
-    button { padding:12px 16px; border:1px solid var(--line); border-radius:11px; background:#132f43; color:var(--text); font-weight:900; cursor:pointer; }
-    button.primary { background:var(--aqua); border-color:var(--aqua); color:#04241f; }
-    button.danger { color:var(--danger); }
-    .output { display:none; margin-top:24px; }
-    .output.visible { display:block; }
-    pre { white-space:pre-wrap; overflow-wrap:anywhere; padding:20px; border:1px dashed var(--gold); border-radius:14px; background:#06131e; color:var(--text); line-height:1.5; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
-    .status { min-height:20px; margin-top:10px; color:var(--aqua); font-size:13px; }
-    @media(max-width:680px){ .grid{grid-template-columns:1fr}.wide{grid-column:auto} }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YachtCoreOS • Stew–Captain Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .heading-serif { font-family: 'Playfair Display', Georgia, serif; }
+        .stew-accent { background: linear-gradient(135deg, #f43f5e 0%, #fb7185 100%); }
+        .stew-text { color: #fb7185; }
+    
+    .test-banner{padding:10px 16px;text-align:center;background:#7d4d00;color:#fff;font-weight:800}.access-overlay{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:20px;background:rgba(3,10,16,.96)}.access-overlay[hidden],#paidFormPage[hidden]{display:none}.access-card{width:min(460px,100%);padding:24px;background:#102638;border:1px solid rgba(255,255,255,.14);border-radius:18px;color:#eef7ff}.access-card p{color:#a9bece;line-height:1.5}.access-card label{display:block;margin:12px 0 7px}.access-card input{width:100%;padding:12px;border:1px solid #45667b;border-radius:10px;background:#081b29;color:#eef7ff}.access-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.access-actions button{padding:12px 16px;border:0;border-radius:10px;background:#39d1bb;color:#04241f;font-weight:900}.access-message{min-height:20px;margin-top:12px;color:#a9bece;font-size:13px}.access-message.error{color:#ff7777}.access-message.success{color:#39d1bb}
+</style>
 </head>
 <body>
   <section class="access-overlay" id="accessOverlay">
     <form class="access-card" id="accessForm">
-      <div class="brand">YachtCoreOS</div>
-      <h2>Open your purchased form</h2>
+      <h2>Open your purchased Stew–Captain Form</h2>
       <p>Enter the same email used at checkout. We will email a secure sign-in link, then verify your active purchase.</p>
       <label for="accessEmail">Purchase email</label>
       <input id="accessEmail" type="email" autocomplete="email" required>
-      <div class="actions">
-        <button class="primary" id="magicLinkButton" type="submit">Email Secure Access Link</button>
-        <button id="signOutButton" type="button" hidden>Sign Out</button>
-      </div>
+      <div class="access-actions"><button id="magicLinkButton" type="submit">Email Secure Access Link</button><button id="signOutButton" type="button" hidden>Sign Out</button></div>
       <div class="access-message" id="accessMessage" aria-live="polite"></div>
     </form>
   </section>
-  <div class="test-banner">TEST BRANCH · Local processing only · No form information is transmitted</div>
-  <main class="page" id="paidFormPage" hidden>
-    <div class="brand">YachtCoreOS</div>
-    <h1>Stew–Captain Hiring Inquiry</h1>
-    <p class="lead">Complete the hiring details once. YachtCoreOS generates a structured “Looking for Crew” brief ready to copy or download.</p>
+  <div class="test-banner">TEST BRANCH · Canonical stewardess-to-captain form · Form answers stay on this device</div>
+  <div id="paidFormPage" hidden>
+    <!-- Navbar -->
+    <nav class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-x-3">
+                <div class="w-10 h-10 stew-accent rounded-2xl flex items-center justify-center shadow-lg shadow-rose-900/20">
+                    <i class="fa-solid fa-wand-magic-sparkles text-white text-xl"></i>
+                </div>
+                <div>
+                    <span class="font-bold text-xl tracking-wide">YachtCoreOS</span>
+                    <span class="stew-text text-xs block -mt-1 font-medium">Interior / Stew Edition</span>
+                </div>
+            </div>
+            <div class="text-xs text-slate-400 bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700">
+                <i class="fa-solid fa-lock text-rose-400 mr-1.5"></i> Canonical Stewardess-to-Captain Pilot
+            </div>
+        </div>
+    </nav>
 
-    <form id="hiringForm">
-      <div class="grid">
-        <div class="card"><label for="vessel">Vessel name or confidential label</label><input id="vessel" name="vessel" placeholder="M/Y Confidential" required></div>
-        <div class="card"><label for="loa">Vessel size</label><input id="loa" name="loa" placeholder="100+ ft" required></div>
-        <div class="card"><label for="position">Position</label><input id="position" name="position" placeholder="Captain, Chief Stew, Deck/Stew…" required></div>
-        <div class="card"><label for="program">Program</label><select id="program" name="program"><option>Private</option><option>Charter</option><option>Private / Charter</option><option>Other</option></select></div>
-        <div class="card"><label for="contract">Contract</label><select id="contract" name="contract"><option>Full-time</option><option>Part-time</option><option>Temporary</option><option>Seasonal</option><option>Rotation</option></select></div>
-        <div class="card"><label for="start">Start / availability</label><input id="start" name="start" placeholder="Immediate or target date"></div>
-        <div class="card"><label for="base">Base / current location</label><input id="base" name="base" placeholder="Fort Lauderdale, Florida" required></div>
-        <div class="card"><label for="schedule">Schedule</label><input id="schedule" name="schedule" placeholder="Flexible, live aboard, 2:2…"></div>
-        <div class="card wide"><label for="route">Passage or itinerary</label><input id="route" name="route" placeholder="Mexico–Florida passage, Bahamas season…"></div>
-        <div class="card wide"><label for="experience">Required experience</label><textarea id="experience" name="experience" placeholder="Similar-size vessels, private program, passage experience…"></textarea></div>
-        <div class="card wide"><label for="credentials">Credentials / certifications</label><textarea id="credentials" name="credentials" placeholder="USCG credentials, STCW, ENG1, visa or flag requirements…"></textarea></div>
-        <div class="card wide"><label for="duties">Responsibilities and technical expectations</label><textarea id="duties" name="duties" placeholder="Operations, maintenance oversight, guest service, team building…"></textarea></div>
-        <div class="card"><label for="compensation">Compensation</label><input id="compensation" name="compensation" placeholder="Weekly/monthly rate or DOE"></div>
-        <div class="card"><label for="expenses">Travel / benefits / perks</label><input id="expenses" name="expenses" placeholder="Travel covered, insurance, tips…"></div>
-        <div class="card"><label for="references">References</label><select id="references" name="references"><option>Required</option><option>Preferred</option><option>Not requested initially</option></select></div>
-        <div class="card"><label for="contact">Application contact</label><input id="contact" name="contact" type="email" placeholder="hiring@example.com" required></div>
-        <div class="card wide"><label for="apply">What applicants should include</label><textarea id="apply" name="apply" placeholder="CV, credentials, relevant experience, location, availability, references, compensation expectations…"></textarea></div>
-        <div class="card wide"><label for="notes">Additional notes</label><textarea id="notes" name="notes" placeholder="Trial period, long-term opportunity, confidentiality…"></textarea></div>
-      </div>
-      <div class="actions">
-        <button class="primary" type="submit">Generate Crew Brief</button>
-        <button type="button" id="saveDraft">Save Draft on This Device</button>
-        <button class="danger" type="button" id="clearDraft">Clear</button>
-      </div>
-      <div class="status" id="status" aria-live="polite"></div>
-    </form>
+    <!-- Header / Hero -->
+    <div class="max-w-4xl mx-auto px-6 pt-10 pb-6 text-center">
+        <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-rose-950/50 border border-rose-800/50 mb-4 text-xs font-medium text-rose-300">
+            <i class="fa-solid fa-circle-check text-rose-400 mr-2"></i> Stop the Endless Back-and-Forth Texting
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold heading-serif tracking-tight mb-3">Stew-Captain Quick Inquiry Form</h1>
+        <p class="text-base text-slate-400 max-w-xl mx-auto">Send this clean interior-focused form to captains inquiring about your stewardess services to lock down vessel details, pay, and rotation instantly.</p>
+    </div>
 
-    <section class="output card" id="outputSection">
-      <h2>Ready-to-post crew brief</h2>
-      <p class="fine">Review every detail before sharing. YachtCoreOS does not verify credentials, licenses, vessel facts, or employment terms.</p>
-      <pre id="brief"></pre>
-      <div class="actions"><button class="primary" id="copyBrief" type="button">Copy Brief</button><button id="downloadBrief" type="button">Download .txt</button></div>
-    </section>
-  </main>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    'use strict';
-    const SUPABASE_URL = "https://tfzbdevnhzzbbhtsarid.supabase.co";
-    const SUPABASE_PUBLIC_KEY = "sb_publishable_56xqPAuxCFUe7edhDUzUaQ_7aZQtOUI";
-    const ACCESS_ENDPOINT = SUPABASE_URL + "/functions/v1/check-stew-captain-access";
-    const accessOverlay = document.getElementById('accessOverlay');
-    const accessForm = document.getElementById('accessForm');
-    const accessEmail = document.getElementById('accessEmail');
-    const accessMessage = document.getElementById('accessMessage');
-    const magicLinkButton = document.getElementById('magicLinkButton');
-    const signOutButton = document.getElementById('signOutButton');
-    const paidFormPage = document.getElementById('paidFormPage');
-    let authClient = null;
+    <!-- Interactive Form Container -->
+    <div class="max-w-4xl mx-auto px-6 pb-20">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl">
+            
+            <form id="inquiryForm" class="space-y-8">
+                
+                <!-- SECTION 1: Vessel Basics -->
+                <div>
+                    <h3 class="text-lg font-semibold text-rose-300 border-b border-slate-800 pb-2 mb-4 flex items-center gap-x-2">
+                        <i class="fa-solid fa-ship"></i> 1. Vessel Overview
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Vessel Name</label>
+                            <input type="text" id="vesselName" placeholder="e.g. M/Y Sanctuary" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Size / Type</label>
+                            <input type="text" id="vesselSize" placeholder="e.g. 112’ Mangusta / Composite" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Year Built / Refit</label>
+                            <input type="text" id="vesselYear" placeholder="e.g. 2021 / 2025 Refit" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Flag State</label>
+                            <input type="text" id="vesselFlag" placeholder="e.g. Cayman Islands (Red Ensign)" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                    </div>
+                </div>
 
-    function setAccessMessage(message, type = '') {
-      accessMessage.textContent = message;
-      accessMessage.className = 'access-message' + (type ? ' ' + type : '');
-    }
+                <!-- SECTION 2: Program & Cruising -->
+                <div>
+                    <h3 class="text-lg font-semibold text-rose-300 border-b border-slate-800 pb-2 mb-4 flex items-center gap-x-2">
+                        <i class="fa-solid fa-compass"></i> 2. Program & Itinerary
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Program Structure</label>
+                            <select id="programType" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                                <option value="Private / Charter Hybrid">Private / Charter Hybrid</option>
+                                <option value="Strictly Private">Strictly Private</option>
+                                <option value="Busy Charter Program">Busy Charter Program</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Current Location / Home Port</label>
+                            <input type="text" id="homePort" placeholder="e.g. Fort Lauderdale, FL" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Expected Cruising Grounds</label>
+                            <input type="text" id="cruisingGrounds" placeholder="e.g. Bahamas winter, New England summer" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                    </div>
+                </div>
 
-    async function verifyEntitlement(session) {
-      paidFormPage.hidden = true;
-      accessOverlay.hidden = false;
-      signOutButton.hidden = !session;
-      if (!session) {
-        setAccessMessage('Enter your purchase email to receive a secure access link.');
-        return;
-      }
+                <!-- SECTION 3: Interior & Crew Setup -->
+                <div>
+                    <h3 class="text-lg font-semibold text-rose-300 border-b border-slate-800 pb-2 mb-4 flex items-center gap-x-2">
+                        <i class="fa-solid fa-champagne-glasses"></i> 3. Interior & Crew Details
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Total Crew Size</label>
+                            <input type="text" id="crewSize" placeholder="e.g. 8 crew total" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Interior Department Structure</label>
+                            <input type="text" id="interiorDept" placeholder="e.g. Chief Stew + 2nd Stew (You)" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Intended Role & Split (Stew Specific)</label>
+                            <input type="text" id="roleSplit" placeholder="e.g. Sole Stew / Service & Housekeeping split" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                    </div>
+                </div>
 
-      setAccessMessage('Verifying your purchase…');
-      const response = await fetch(ACCESS_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          apikey: SUPABASE_PUBLIC_KEY,
-          authorization: 'Bearer ' + session.access_token,
-          'content-type': 'application/json'
-        },
-        body: '{}'
-      });
-      const result = await response.json().catch(() => ({}));
-      if (!response.ok || result.allowed !== true) {
-        setAccessMessage('No active Stew–Captain Form purchase was found for this signed-in email.', 'error');
-        return;
-      }
+                <!-- SECTION 4: Package, Pay & Rotation -->
+                <div>
+                    <h3 class="text-lg font-semibold text-rose-300 border-b border-slate-800 pb-2 mb-4 flex items-center gap-x-2">
+                        <i class="fa-solid fa-file-invoice-dollar"></i> 4. Compensation & Terms
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Offered Pay & Currency</label>
+                            <input type="text" id="offeredPay" placeholder="e.g. $5,500 USD / month" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Rotation / Leave Package</label>
+                            <input type="text" id="rotation" placeholder="e.g. Standard 38 days leave / year" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Contract Type</label>
+                            <input type="text" id="contractType" placeholder="e.g. MLC Standard / Seasonal / Permanent" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Flights & Medical Included?</label>
+                            <input type="text" id="benefits" placeholder="e.g. Annual flights + Medical included" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Expected Start Date</label>
+                            <input type="text" id="startDate" placeholder="e.g. Immediate / Sept 1st" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Guest / Owner Frequency</label>
+                            <input type="text" id="guestNotes" placeholder="e.g. Moderate owner use, 4 charter weeks" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500">
+                        </div>
+                    </div>
+                </div>
 
-      accessOverlay.hidden = true;
-      paidFormPage.hidden = false;
-      setAccessMessage('Purchase verified.', 'success');
-    }
+                <!-- SECTION 5: Additional Notes -->
+                <div>
+                    <label class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-1.5">Extra Interior Notes / Requirements</label>
+                    <textarea id="extraNotes" rows="3" placeholder="e.g. Silver service experience required, non-smoker, uniforms provided..." class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-rose-500"></textarea>
+                </div>
 
-    async function initializeAccess() {
-      if (!window.supabase?.createClient) {
-        setAccessMessage('Secure sign-in could not load. Refresh and try again.', 'error');
-        return;
-      }
-      authClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY, {
-        auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
-      });
-      const { data } = await authClient.auth.getSession();
-      await verifyEntitlement(data?.session ?? null);
-      authClient.auth.onAuthStateChange((_event, session) => {
-        setTimeout(() => verifyEntitlement(session), 0);
-      });
-    }
+            </form>
 
-    accessForm.addEventListener('submit', async event => {
-      event.preventDefault();
-      if (!authClient) return;
-      const email = accessEmail.value.trim();
-      if (!email) return;
-      magicLinkButton.disabled = true;
-      setAccessMessage('Sending secure access link…');
-      const { error } = await authClient.auth.signInWithOtp({
-        email,
-        options: { emailRedirectTo: window.location.origin + window.location.pathname }
-      });
-      magicLinkButton.disabled = false;
-      setAccessMessage(
-        error ? error.message : 'Check your email and open the secure sign-in link on this device.',
-        error ? 'error' : 'success'
-      );
-    });
+            <!-- Output Action Area -->
+            <div class="mt-8 pt-6 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="text-xs text-slate-400 text-center md:text-left">
+                    <i class="fa-solid fa-circle-info text-rose-400 mr-1"></i> Tap below to generate a clean, formatted text response for the captain.
+                </div>
+                <button type="button" onclick="generateAndCopyAnswers()" class="w-full md:w-auto px-8 py-3.5 stew-accent hover:opacity-90 font-semibold rounded-2xl shadow-lg shadow-rose-900/30 flex items-center justify-center gap-x-2 transition-all">
+                    <i class="fa-regular fa-clipboard"></i> <span>Copy Formatted Answers</span>
+                </button>
+            </div>
 
-    signOutButton.addEventListener('click', async () => {
-      if (authClient) await authClient.auth.signOut();
-    });
+            <!-- Success Alert Banner -->
+            <div id="copyAlert" class="hidden mt-4 p-4 bg-emerald-950/60 border border-emerald-800/60 text-emerald-300 rounded-2xl text-center text-sm font-medium animate-pulse">
+                <i class="fa-solid fa-check-circle mr-2"></i> Copied to clipboard! Ready to paste back to your chat.
+            </div>
 
-    const form = document.getElementById('hiringForm');
-    const status = document.getElementById('status');
-    const output = document.getElementById('outputSection');
-    const brief = document.getElementById('brief');
-    const draftKey = 'yachtcoreos-stew-captain-draft-v1';
+        </div>
+    </div>
 
-    const clean = value => String(value || '').trim();
-    const line = (label, value) => clean(value) ? `${label}: ${clean(value)}` : '';
-    function values() { return Object.fromEntries(new FormData(form).entries()); }
-    function buildBrief(data) {
-      return [
-        `${clean(data.position).toUpperCase()} — ${clean(data.contract).toUpperCase()} OPPORTUNITY`,
-        '',
-        `${clean(data.vessel)} | ${clean(data.loa)} | ${clean(data.program)} program`,
-        line('Base', data.base), line('Start / availability', data.start), line('Schedule', data.schedule), line('Passage / itinerary', data.route),
-        '', 'POSITION DETAILS',
-        line('Required experience', data.experience), line('Credentials', data.credentials), line('Responsibilities', data.duties),
-        line('Compensation', data.compensation), line('Travel / benefits / perks', data.expenses), line('References', data.references),
-        '', 'HOW TO APPLY',
-        clean(data.apply) || 'Send your CV, relevant experience, current location, availability, references, and compensation expectations.',
-        line('Contact', data.contact),
-        clean(data.notes) ? `\nADDITIONAL NOTES\n${clean(data.notes)}` : ''
-      ].filter(Boolean).join('\n');
-    }
-    function saveDraft() { localStorage.setItem(draftKey, JSON.stringify(values())); status.textContent = 'Draft saved on this device.'; }
-    function loadDraft() {
-      try { const data = JSON.parse(localStorage.getItem(draftKey) || '{}'); Object.entries(data).forEach(([key,value]) => { if (form.elements[key]) form.elements[key].value = value; }); }
-      catch { localStorage.removeItem(draftKey); }
-    }
-    form.addEventListener('submit', event => { event.preventDefault(); if (!form.reportValidity()) return; brief.textContent = buildBrief(values()); output.classList.add('visible'); output.scrollIntoView({behavior:'smooth'}); status.textContent = 'Crew brief generated locally.'; });
-    document.getElementById('saveDraft').addEventListener('click', saveDraft);
-    document.getElementById('clearDraft').addEventListener('click', () => { if (!confirm('Clear this form and its local draft?')) return; form.reset(); localStorage.removeItem(draftKey); output.classList.remove('visible'); status.textContent = 'Form cleared.'; });
-    document.getElementById('copyBrief').addEventListener('click', async () => { try { await navigator.clipboard.writeText(brief.textContent); status.textContent = 'Crew brief copied.'; } catch { status.textContent = 'Copy was blocked. Select the brief manually.'; } });
-    document.getElementById('downloadBrief').addEventListener('click', () => { const blob = new Blob([brief.textContent],{type:'text/plain'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='YachtCoreOS-Crew-Brief.txt'; a.click(); URL.revokeObjectURL(url); status.textContent='Crew brief downloaded.'; });
-    loadDraft();
-    initializeAccess();
-  </script>
+    <!-- Footer -->
+    <footer class="text-center pb-12 text-xs text-slate-600">
+        YachtCoreOS • Built for Elite Interior Professionals
+    </footer>
+
+    <!-- Script to Generate & Copy Structured Text -->
+    <script>
+        function generateAndCopyAnswers() {
+            const getVal = (id) => document.getElementById(id).value.trim() || 'Not specified';
+
+            const outputText = 
+`⚓ *STEWARDESS POSITION INQUIRY DETAILS* ⚓
+
+*1. VESSEL OVERVIEW*
+• Vessel Name: ${getVal('vesselName')}
+• Size / Type: ${getVal('vesselSize')}
+• Year / Refit: ${getVal('vesselYear')}
+• Flag: ${getVal('vesselFlag')}
+
+*2. PROGRAM & ITINERARY*
+• Program: ${getVal('programType')}
+• Home Port: ${getVal('homePort')}
+• Cruising Grounds: ${getVal('cruisingGrounds')}
+
+*3. INTERIOR & CREW*
+• Total Crew: ${getVal('crewSize')}
+• Interior Team: ${getVal('interiorDept')}
+• Role Split: ${getVal('roleSplit')}
+
+*4. PACKAGE & TERMS*
+• Offered Pay: ${getVal('offeredPay')}
+• Rotation: ${getVal('rotation')}
+• Contract Type: ${getVal('contractType')}
+• Flights / Medical: ${getVal('benefits')}
+• Start Date: ${getVal('startDate')}
+• Guest Schedule: ${getVal('guestNotes')}
+
+*5. EXTRA NOTES*
+• ${getVal('extraNotes')}
+
+---
+*Generated via YachtCoreOS • Interior Edition*`;
+
+            navigator.clipboard.writeText(outputText).then(() => {
+                const alertBox = document.getElementById('copyAlert');
+                alertBox.classList.remove('hidden');
+                setTimeout(() => {
+                    alertBox.classList.add('hidden');
+                }, 4000);
+            }).catch(err => {
+                alert('Failed to copy text. Please try again.');
+            });
+        }
+    </script>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+'use strict';
+const SUPABASE_URL="https://tfzbdevnhzzbbhtsarid.supabase.co";
+const SUPABASE_PUBLIC_KEY="sb_publishable_56xqPAuxCFUe7edhDUzUaQ_7aZQtOUI";
+const ACCESS_ENDPOINT=SUPABASE_URL+"/functions/v1/check-stew-captain-access";
+const accessOverlay=document.getElementById("accessOverlay"),accessForm=document.getElementById("accessForm"),accessEmail=document.getElementById("accessEmail"),accessMessage=document.getElementById("accessMessage"),magicLinkButton=document.getElementById("magicLinkButton"),signOutButton=document.getElementById("signOutButton"),paidFormPage=document.getElementById("paidFormPage");
+let authClient=null;
+function setAccessMessage(message,type=""){accessMessage.textContent=message;accessMessage.className="access-message"+(type?" "+type:"")}
+async function verifyEntitlement(session){paidFormPage.hidden=true;accessOverlay.hidden=false;signOutButton.hidden=!session;if(!session){setAccessMessage("Enter your purchase email to receive a secure access link.");return}setAccessMessage("Verifying your purchase…");const response=await fetch(ACCESS_ENDPOINT,{method:"POST",headers:{apikey:SUPABASE_PUBLIC_KEY,authorization:"Bearer "+session.access_token,"content-type":"application/json"},body:"{}"});const result=await response.json().catch(()=>({}));if(!response.ok||result.allowed!==true){setAccessMessage("No active Stew–Captain Form purchase was found for this signed-in email.","error");return}accessOverlay.hidden=true;paidFormPage.hidden=false;setAccessMessage("Purchase verified.","success")}
+async function initializeAccess(){if(!window.supabase?.createClient){setAccessMessage("Secure sign-in could not load. Refresh and try again.","error");return}authClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLIC_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});const{data}=await authClient.auth.getSession();await verifyEntitlement(data?.session??null);authClient.auth.onAuthStateChange((_event,session)=>setTimeout(()=>verifyEntitlement(session),0))}
+accessForm.addEventListener("submit",async event=>{event.preventDefault();if(!authClient)return;const email=accessEmail.value.trim();if(!email)return;magicLinkButton.disabled=true;setAccessMessage("Sending secure access link…");const{error}=await authClient.auth.signInWithOtp({email,options:{emailRedirectTo:window.location.origin+window.location.pathname}});magicLinkButton.disabled=false;setAccessMessage(error?error.message:"Check your email and open the secure sign-in link on this device.",error?"error":"success")});
+signOutButton.addEventListener("click",async()=>{if(authClient)await authClient.auth.signOut()});
+initializeAccess();
+</script>
 </body>
 </html>
