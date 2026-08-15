@@ -42,8 +42,9 @@ All calculator inputs and calculations remain client-side. The package requires 
 - Dedicated $12 sales preview loads on mobile and desktop.
 - Every price and delivery statement is consistent.
 - CTA opens the verified Stripe Sandbox Payment Link.
-- Stripe checkout returns to the branch-specific success page.
-- The success page clearly states that redirect alone does not prove payment.
+- Stripe displays its verified hosted Sandbox confirmation message.
+- A branch-specific success page is staged for later use, but is not configured as the Payment Link return while the Vercel preview remains access-protected.
+- Both confirmation surfaces state that redirect or display alone does not prove payment.
 - Manual delivery follows `docs/calculator-pack-delivery-runbook.md`.
 - The ZIP checksum matches the audited package before every delivery.
 
