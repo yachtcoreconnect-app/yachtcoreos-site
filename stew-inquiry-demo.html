@@ -53,9 +53,9 @@
       <strong>Output:</strong> a clean captain-response summary the stewardess can copy back into her conversation.
     </section>
 
-    <!-- CHECKOUT_TEST_URL: replace only with a Stripe TEST-mode Payment Link verified in Stripe Dashboard. -->
-    <a id="checkoutButton" class="cta" href="#" aria-disabled="true">Test checkout not configured</a>
-    <p class="fine">Test branch only. No live payment link is enabled. Approved price: $19 one-time.</p>
+    <!-- Verified Stripe Sandbox Payment Link. Do not replace with a live URL without owner approval. -->
+    <a id="checkoutButton" class="cta" href="https://buy.stripe.com/test_bJebJ16RqgNV6NWcI54ow00">Continue to $19 Test Checkout</a>
+    <p class="fine">Stripe Sandbox only. This test link cannot create a live charge. Approved price: $19 one-time.</p>
   </main>
   <script>
     document.querySelectorAll('.option').forEach(button => button.addEventListener('click', () => button.classList.toggle('selected')));
